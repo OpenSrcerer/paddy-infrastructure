@@ -23,5 +23,5 @@ module "paddy_vm" {
   source       = "./gcp-cloud-vm"
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
-  amount       = 0
+  amount       = 1
 }
