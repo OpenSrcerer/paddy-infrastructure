@@ -18,7 +18,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 cd /home/ubuntu
 
-sudo git clone https://github.com/OpenSrcerer/paddy-backend.git
+sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
 cd paddy-backend/docker-paddy
 
