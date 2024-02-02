@@ -1,0 +1,57 @@
+version: "3.8"
+
+networks:
+  paddy-bridge:
+    driver: bridge
+
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+  
+  paddy-backend:
+    container_name: paddy-backend
+    networks:
+      paddy-bridge:
+        aliases:
+          - paddy.backend.io
+    image: ghcr.io/opensrcerer/paddy-backend:latest
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1337/health"]
+      interval: 5s
+      timeout: 30s
+      retries: 3
+      start_period: 10s
+    ports:
+      - "1337:1337"
+    env_file:
+      - "env.backend"
+
+  emqx1:
+    image: emqx:5.4.1
+    container_name: emqx1
+    restart: on-failure
+    environment:
+      - "EMQX_NODE_NAME=emqx@node1.emqx.io"
+      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
+      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
+    healthcheck:
+      test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    networks:
+      paddy-bridge:
+        aliases:
+          - node1.emqx.io
+    ports:
+      - "1883:1883"
+      - "8083:8083"
+      - "8084:8084"
+      - "8883:8883"
+      - "18083:18083"

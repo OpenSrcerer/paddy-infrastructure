@@ -19,3 +19,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 cd /home/ubuntu
 
 sudo git clone https://github.com/OpenSrcerer/paddy-backend.git
+
+cd paddy-backend/docker-paddy
+
+sudo docker compose up -d
