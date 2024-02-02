@@ -1,7 +1,5 @@
 variable "project" {}
 
-variable "service_account_file" {}
-
 variable "region" {
   default = "europe-west6"
 }
