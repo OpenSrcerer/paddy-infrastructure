@@ -22,4 +22,17 @@ sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
 cd paddy-backend/docker-paddy
 
-sudo docker compose up -d
+# Loop till docker starts up lmao
+SUCCESS=0
+ATTEMPTS=0
+
+until [ $SUCCESS -eq 1 ] || [ $ATTEMPTS -eq 10 ]; do
+  sudo docker compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
+  sleep 10
+done
+
+if [ $SUCCESS -eq 0 ]; then
+  cd ../../
+  echo "Docker didn't boot up in time, exiting..." >> error.txt
+  exit 1
+fi
