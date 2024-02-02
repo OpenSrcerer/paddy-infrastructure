@@ -20,7 +20,7 @@ cd /home/ubuntu
 
 sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
-cd paddy-backend/docker-paddy
+cd ./paddy-backend/docker-paddy
 
 # Loop till docker starts up lmao
 SUCCESS=0
