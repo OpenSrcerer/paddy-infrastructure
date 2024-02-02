@@ -7,6 +7,6 @@ variable "region" {
 }
 
 variable "zone" {
-  default = "europe-west6a"
+  default = "europe-west6-a"
 }
 
