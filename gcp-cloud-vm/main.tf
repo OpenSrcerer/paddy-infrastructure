@@ -5,7 +5,7 @@ data "template_file" "init" {
 resource "google_compute_instance" "default" {
   name                      = var.name
   count                     = var.amount
-  machine_type              = "e2-medium"
+  machine_type              = "e2-small"
   zone                      = "europe-west6-a"
   allow_stopping_for_update = false
 
