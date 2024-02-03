@@ -19,7 +19,7 @@ resource "google_compute_health_check" "tcp_health_check" {
   }
 }
 
-resource "google_compute_address" "static" {
+resource "google_compute_global_address" "static" {
   name = "${var.name}-ip-address"
 }
 
@@ -28,12 +28,11 @@ resource "google_compute_target_tcp_proxy" "default" {
   backend_service =          google_compute_backend_service.backendservice.self_link
 }
 
-resource "google_compute_forwarding_rule" "forwarding_rule" {
+resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   name       = "${var.name}-lb-forwarding-rule"
-  region = var.region
   ip_protocol= "TCP"
   port_range = "1883"
-  ip_address = google_compute_address.static.self_link
+  ip_address = google_compute_global_address.static.self_link
 
   target = google_compute_target_tcp_proxy.default.self_link
 }
