@@ -1,5 +1,6 @@
 resource "google_compute_backend_service" "backendservice" {
   name            = "${var.name}-lb-backend-service"
+  port_name = "mqtt"
   protocol        = "TCP"
   timeout_sec     = 10
   health_checks   = [google_compute_health_check.tcp_health_check.self_link]
