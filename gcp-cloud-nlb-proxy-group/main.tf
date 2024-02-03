@@ -50,7 +50,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   named_port {
-    name = "MQTT"
+    name = "mqtt"
     port = 1883
   }
 
