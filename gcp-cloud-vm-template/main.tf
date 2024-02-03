@@ -4,7 +4,7 @@ data "template_file" "init" {
 
 resource "google_compute_instance_template" "default_template" {
   name_prefix    = "${var.name}-"
-  machine_type   = "e2-micro"
+  machine_type   = "e2-small"
   can_ip_forward = false
 
   scheduling {
