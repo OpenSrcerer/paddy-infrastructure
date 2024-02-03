@@ -19,14 +19,33 @@ module "paddy_nw" {
   allowed_ports_tcp_anyip = ["22", "1883"]
 }
 
-module "paddy_vm" {
-  source       = "./gcp-cloud-vm"
+module "paddy_backend_instance_template" {
+  source = "./gcp-cloud-vm-template-paddy-backend"
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
   backend_mqtt_host          = var.backend_mqtt_host
   backend_mqtt_port          = var.backend_mqtt_port
   backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
-
-  amount = 1
 }
+
+module "paddy_nlb_proxy_group" {
+  source = "./gcp-cloud-nlb-proxy-group"
+
+  name = "paddy-machine"
+  zone = var.zone
+  instance_template = module.paddy_backend_instance_template.self_link
+  replicas = 1
+}
+
+# module "paddy_vm" {
+#   source       = "./gcp-cloud-vm"
+#   name         = "paddy-machine"
+#   network_name = module.paddy_nw.network_name
+#
+#   backend_mqtt_host          = var.backend_mqtt_host
+#   backend_mqtt_port          = var.backend_mqtt_port
+#   backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
+#
+#   amount = 1
+# }
