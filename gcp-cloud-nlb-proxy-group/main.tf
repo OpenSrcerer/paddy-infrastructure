@@ -5,10 +5,10 @@ resource "google_compute_backend_service" "backendservice" {
   timeout_sec   = 600 # Timeout for all MQTT messages
   health_checks = [google_compute_health_check.tcp_health_check.self_link]
 
-
   backend {
     group          = google_compute_instance_group_manager.default.instance_group
     balancing_mode = "CONNECTION"
+    max_connections_per_instance = 1000
   }
 }
 
