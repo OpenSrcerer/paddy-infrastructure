@@ -19,7 +19,7 @@ services:
       paddy-bridge:
         aliases:
           - paddy.backend.io
-    image: ghcr.io/opensrcerer/paddy-backend:latest
+    image: ghcr.io/opensrcerer/paddy-backend:master
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:1337/health"]
