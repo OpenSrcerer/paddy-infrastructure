@@ -25,7 +25,7 @@ resource "google_compute_address" "static" {
 
 resource "google_compute_forwarding_rule" "forwarding_rule" {
   name       = "${var.name}-lb-forwarding-rule"
-  region     = var.region
+  region = var.region
   ip_protocol= "TCP"
   port_range = "1883"
   ip_address = google_compute_address.static.address

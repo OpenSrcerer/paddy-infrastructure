@@ -1,5 +1,7 @@
 variable "name" {}
 
+variable "region" {}
+
 variable "zone" {}
 
 variable "instance_template" {}
