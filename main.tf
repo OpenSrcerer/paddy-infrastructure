@@ -20,7 +20,7 @@ module "paddy_nw" {
 }
 
 module "paddy_backend_instance_template" {
-  source = "./gcp-cloud-vm-template-paddy-backend"
+  source       = "./gcp-cloud-vm-template-paddy-backend"
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
@@ -32,11 +32,11 @@ module "paddy_backend_instance_template" {
 module "paddy_nlb_proxy_group" {
   source = "./gcp-cloud-nlb-proxy-group"
 
-  name = "paddy-machine"
-  zone = var.zone
-  region = var.region
+  name              = "paddy-machine"
+  zone              = var.zone
+  region            = var.region
   instance_template = module.paddy_backend_instance_template.self_link
-  replicas = 1
+  replicas          = 1
 }
 
 # module "paddy_vm" {

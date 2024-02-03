@@ -4,13 +4,13 @@ variable "network_name" {}
 
 // ---- BACKEND-ENV-VARS ----
 variable "backend_mqtt_host" {
-    default = "<unset>"
+  default = "<unset>"
 }
 
 variable "backend_mqtt_port" {
-    default = "<unset>"
+  default = "<unset>"
 }
 
 variable "backend_mqtt_subscriptions" {
-    default = "<unset>"
+  default = "<unset>"
 }
