@@ -20,7 +20,7 @@ module "paddy_nw" {
 }
 
 module "paddy_backend_instance_template" {
-  source       = "./gcp-cloud-vm-template-paddy-backend"
+  source       = "./gcp-cloud-vm-template"
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
