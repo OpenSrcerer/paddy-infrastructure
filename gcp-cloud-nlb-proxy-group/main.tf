@@ -32,7 +32,7 @@ resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   name       = "${var.name}-lb-forwarding-rule"
   ip_protocol= "TCP"
   port_range = "1883"
-  ip_address = google_compute_address.static.address
+  ip_address = google_compute_address.static.self_link
 
   target = google_compute_target_tcp_proxy.default.self_link
 }
