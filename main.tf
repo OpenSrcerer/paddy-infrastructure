@@ -34,6 +34,7 @@ module "paddy_nlb_proxy_group" {
 
   name = "paddy-machine"
   zone = var.zone
+  region = var.region
   instance_template = module.paddy_backend_instance_template.self_link
   replicas = 1
 }
