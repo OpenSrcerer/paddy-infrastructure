@@ -23,6 +23,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: TestEnv
+      run: echo "$BACKEND_MQTT_HOST:$BACKEND_MQTT_PORT"
+
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -47,10 +50,10 @@ jobs:
       if: "contains(github.event.head_commit.message, '[terraform apply]')"
       run: terraform apply -auto-approve -input=false
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-        BACKEND_MQTT_HOST: ${{ secrets.BACKEND_MQTT_HOST }}
-        BACKEND_MQTT_PORT: $BACKEND_MQTT_PORT
-        BACKEND_MQTT_SUBSCRIPTIONS: $BACKEND_MQTT_PORT
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          BACKEND_MQTT_HOST: ${{ secrets.BACKEND_MQTT_HOST }}
+          BACKEND_MQTT_PORT: ${{ env.BACKEND_MQTT_PORT }}
+          BACKEND_MQTT_SUBSCRIPTIONS: ${{ env.BACKEND_MQTT_PORT }}
 
     - name: Terraform Destroy
       if: "contains(github.event.head_commit.message, '[terraform destroy]')"
