@@ -54,7 +54,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   update_policy {
-    type                    = "PROACTIVE"
+    type                    = "OPPORTUNISTIC"
     minimal_action          = "REPLACE"
     replacement_method      = "SUBSTITUTE"
     max_unavailable_percent = 50
