@@ -22,6 +22,11 @@ sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
 cd ./paddy-infrastructure/docker-paddy
 
+# Get environment variables
+BACKEND_MQTT_HOST=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/BACKEND_MQTT_HOST)
+BACKEND_MQTT_PORT=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/BACKEND_MQTT_PORT)
+BACKEND_MQTT_SUBSCRIPTIONS=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/BACKEND_MQTT_SUBSCRIPTIONS)
+
 # Loop till docker starts up lmao
 SUCCESS=0
 ATTEMPTS=0

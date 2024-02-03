@@ -29,8 +29,10 @@ services:
       start_period: 10s
     ports:
       - "1337:1337"
-    env_file:
-      - "env.backend"
+    environment:
+      - MQTT_HOST=${BACKEND_MQTT_HOST}
+      - MQTT_PORT=${BACKEND_MQTT_PORT}
+      - MQTT_SUBSCRIPTIONS=${BACKEND_MQTT_SUBSCRIPTIONS}
 
   emqx1:
     image: emqx:5.4.1
