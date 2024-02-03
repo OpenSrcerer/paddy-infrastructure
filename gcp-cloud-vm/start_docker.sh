@@ -27,15 +27,12 @@ BACKEND_MQTT_HOST=$(curl -H "Metadata-Flavor: Google" http://metadata.google.int
 BACKEND_MQTT_PORT=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/backend_mqtt_host)
 BACKEND_MQTT_SUBSCRIPTIONS=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/backend_mqtt_subscriptions)
 
-# Print Env variables
-echo $BACKEND_MQTT_HOST
-
 # Loop till docker starts up lmao
 SUCCESS=0
 ATTEMPTS=0
 
 until [ $SUCCESS -eq 1 ] || [ $ATTEMPTS -eq 10 ]; do
-  sudo docker compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
+  sudo -E docker compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
   sleep 10
 done
 
