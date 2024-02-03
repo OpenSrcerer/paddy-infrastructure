@@ -10,8 +10,8 @@ resource "google_compute_instance" "default" {
   allow_stopping_for_update = false
 
   metadata = {
-    backend_mqtt_host = var.backend_mqtt_host
-    backend_mqtt_port = var.backend_mqtt_port
+    backend_mqtt_host          = var.backend_mqtt_host
+    backend_mqtt_port          = var.backend_mqtt_port
     backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
   }
 

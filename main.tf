@@ -24,9 +24,9 @@ module "paddy_vm" {
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
-  backend_mqtt_host = var.backend_mqtt_host
-  backend_mqtt_port = var.backend_mqtt_port
+  backend_mqtt_host          = var.backend_mqtt_host
+  backend_mqtt_port          = var.backend_mqtt_port
   backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
 
-  amount       = 1
+  amount = 1
 }

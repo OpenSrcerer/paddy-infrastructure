@@ -4,9 +4,10 @@ on:
   push:
     branches: [ "master" ]
 env:
-  TF_VAR_BACKEND_MQTT_HOST: ${{ vars.TF_VAR_BACKEND_MQTT_HOST }}
-  TF_VAR_BACKEND_MQTT_PORT: ${{ vars.TF_VAR_BACKEND_MQTT_PORT }}
-  TF_VAR_BACKEND_MQTT_SUBSCRIPTIONS: ${{ secrets.TF_VAR_BACKEND_MQTT_SUBSCRIPTIONS }}
+  TF_VAR_BACKEND_MQTT_HOST: ${{ vars.BACKEND_MQTT_HOST }}
+  TF_VAR_BACKEND_MQTT_PORT: ${{ vars.BACKEND_MQTT_PORT }}
+  TF_VAR_BACKEND_MQTT_SUBSCRIPTIONS: ${{ secrets.BACKEND_MQTT_SUBSCRIPTIONS }}
+  GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
 permissions:
   contents: read
@@ -27,9 +28,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: TestEnv
-      run: echo "$backend_mqtt_host:$backend_mqtt_port:$backend_mqtt_subscriptions"
-
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
@@ -39,26 +37,18 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: terraform init
-      env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
       run: terraform plan -input=false
-      env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       if: "contains(github.event.head_commit.message, '[terraform apply]')"
       run: terraform apply -auto-approve -input=false
-      env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
     - name: Terraform Destroy
       if: "contains(github.event.head_commit.message, '[terraform destroy]')"
       run: terraform destroy -auto-approve -input=false
-      env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       

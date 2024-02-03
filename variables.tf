@@ -10,13 +10,16 @@ variable "zone" {
 
 // ---- BACKEND-ENV-VARS ----
 variable "backend_mqtt_host" {
-  default = "<unset>"
+  description = "Broker for the backend MQTT connection"
+  type        = string
 }
 
 variable "backend_mqtt_port" {
-  default = "<unset>"
+  description = "Broker port for the backend MQTT connection"
+  type        = string
 }
 
 variable "backend_mqtt_subscriptions" {
-  default = "<unset>"
+  description = "Where the backend should listen to for machine messages"
+  type        = string
 }
