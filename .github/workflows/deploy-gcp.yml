@@ -3,6 +3,10 @@ name: 'Terraform'
 on:
   push:
     branches: [ "master" ]
+env:
+  backend_mqtt_host: ${{ vars.BACKEND_MQTT_HOST }}
+  backend_mqtt_port: ${{ vars.BACKEND_MQTT_PORT }}
+  backend_mqtt_subscriptions: ${{ secrets.BACKEND_MQTT_SUBSCRIPTIONS }}
 
 permissions:
   contents: read
@@ -24,11 +28,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: TestEnv
-      run: echo "$BACKEND_MQTT_HOST:$BACKEND_MQTT_PORT:"
-      env:
-          BACKEND_MQTT_HOST: ${{ vars.BACKEND_MQTT_HOST }}
-          BACKEND_MQTT_PORT: ${{ vars.BACKEND_MQTT_PORT }}
-          BACKEND_MQTT_SUBSCRIPTIONS: ${{ secrets.BACKEND_MQTT_SUBSCRIPTIONS }}
+      run: echo "$backend_mqtt_host:$backend_mqtt_port:$backend_mqtt_subscriptions"
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
@@ -55,9 +55,6 @@ jobs:
       run: terraform apply -auto-approve -input=false
       env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-          BACKEND_MQTT_HOST: ${{ vars.BACKEND_MQTT_HOST }}
-          BACKEND_MQTT_PORT: ${{ vars.BACKEND_MQTT_PORT }}
-          BACKEND_MQTT_SUBSCRIPTIONS: ${{ secrets.BACKEND_MQTT_SUBSCRIPTIONS }}
 
     - name: Terraform Destroy
       if: "contains(github.event.head_commit.message, '[terraform destroy]')"
