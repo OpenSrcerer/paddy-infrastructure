@@ -38,7 +38,7 @@ resource "google_compute_instance_group_manager" "default" {
   zone                = var.zone
 
   version {
-    instance_template   = module.paddy-backend-instance-template.instance_template.self_link
+    instance_template   = var.instance_template
   }
 
   target_size = var.replicas
