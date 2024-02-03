@@ -51,7 +51,17 @@ resource "google_compute_instance_group_manager" "default" {
   auto_healing_policies {
     health_check      = google_compute_health_check.tcp_health_check.id
     initial_delay_sec = 300
+  }
 
+  update_policy {
+    type                           = "PROACTIVE"
+    minimal_action                 = "RESTART"
+    most_disruptive_allowed_action = "REPLACE"
+    replacement_method             = "SUBSTITUTE"
+  }
+
+  instance_lifecycle_policy {
+    force_update_on_repair = "YES"
   }
 
   version {
