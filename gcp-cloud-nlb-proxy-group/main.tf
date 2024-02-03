@@ -1,3 +1,21 @@
+resource "google_compute_global_address" "static" {
+  name = "${var.name}-ip-address"
+}
+
+resource "google_compute_target_tcp_proxy" "default" {
+  name            = "${var.name}-target-tcp-proxy"
+  backend_service = google_compute_backend_service.backendservice.self_link
+}
+
+resource "google_compute_global_forwarding_rule" "forwarding_rule" {
+  name        = "${var.name}-lb-forwarding-rule"
+  ip_protocol = "TCP"
+  port_range  = "1883"
+  ip_address  = google_compute_global_address.static.self_link
+
+  target = google_compute_target_tcp_proxy.default.self_link
+}
+
 resource "google_compute_backend_service" "backendservice" {
   name          = "${var.name}-lb-backend-service"
   port_name     = "mqtt"
@@ -24,29 +42,16 @@ resource "google_compute_health_check" "tcp_health_check" {
   }
 }
 
-resource "google_compute_global_address" "static" {
-  name = "${var.name}-ip-address"
-}
-
-resource "google_compute_target_tcp_proxy" "default" {
-  name            = "${var.name}-target-tcp-proxy"
-  backend_service = google_compute_backend_service.backendservice.self_link
-}
-
-resource "google_compute_global_forwarding_rule" "forwarding_rule" {
-  name        = "${var.name}-lb-forwarding-rule"
-  ip_protocol = "TCP"
-  port_range  = "1883"
-  ip_address  = google_compute_global_address.static.self_link
-
-  target = google_compute_target_tcp_proxy.default.self_link
-}
-
 resource "google_compute_instance_group_manager" "default" {
   name = "${var.name}-instance-group"
 
   base_instance_name = var.name
   zone               = var.zone
+
+  auto_healing_policies {
+    health_check = google_compute_health_check.tcp_health_check.id
+    initial_delay_sec = 300
+  }
 
   version {
     instance_template = var.instance_template
