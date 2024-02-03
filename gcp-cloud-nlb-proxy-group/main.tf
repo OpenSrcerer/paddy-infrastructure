@@ -19,11 +19,16 @@ resource "google_compute_health_check" "tcp_health_check" {
   }
 }
 
+resource "google_compute_address" "static" {
+  name = "${var.name}-ip-address"
+}
+
 resource "google_compute_forwarding_rule" "forwarding_rule" {
   name       = "${var.name}-lb-forwarding-rule"
   region     = var.region
   ip_protocol= "TCP"
   port_range = "1883"
+  ip_address = google_compute_address.static.address
   backend_service = google_compute_region_backend_service.backendservice.self_link
 }
 
@@ -31,8 +36,10 @@ resource "google_compute_instance_group_manager" "default" {
   name                = "${var.name}-instance-group"
   base_instance_name  = var.name
   zone                = var.zone
-  instance_template   = module.paddy-backend-instance-template.instance_template.self_link
-  update_strategy     = "NONE"
+
+  version {
+    instance_template   = module.paddy-backend-instance-template.instance_template.self_link
+  }
 
   target_size = var.replicas
 }

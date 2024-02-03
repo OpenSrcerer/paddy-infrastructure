@@ -21,7 +21,9 @@ resource "google_compute_instance_template" "default_template" {
 
     network_interface {
         network = var.network_name
-        // Use a subnetwork or you may want to add more
+        access_config {
+            // Ephemeral IP
+        }
     }
 
     service_account {
