@@ -25,7 +25,7 @@ resource "google_compute_address" "static" {
 
 resource "google_compute_target_tcp_proxy" "default" {
   name            = "${var.name}-target-tcp-proxy"
-  service         = google_compute_backend_service.backendservice.self_link
+  backend_service =          google_compute_backend_service.backendservice.self_link
 }
 
 resource "google_compute_global_forwarding_rule" "forwarding_rule" {
