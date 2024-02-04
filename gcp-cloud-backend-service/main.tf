@@ -1,8 +1,8 @@
 resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   for_each = var.target_ports
 
-  name        = "${var.name}-lb-forwarding-rule-${each.key}"
-  
+  name = "${var.name}-lb-forwarding-rule-${each.key}"
+
   ip_protocol = var.service_protocol
   port_range  = each.value
   ip_address  = var.static_ip
