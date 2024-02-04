@@ -27,6 +27,7 @@ module "backend_service_tcp" {
   proxy            = google_compute_target_tcp_proxy.default.self_link
   health_check     = google_compute_health_check.tcp_health_check.self_link
   group_manager    = google_compute_instance_group_manager.default.self_link
+  static_ip        = google_compute_global_address.static.self_link
 }
 
 # [SECURE TLS CONFIG]
@@ -46,6 +47,7 @@ module "backend_service_tls" {
   proxy            = google_compute_target_tcp_proxy.default.self_link
   health_check     = google_compute_health_check.tcp_health_check.self_link
   group_manager    = google_compute_instance_group_manager.default.self_link
+  static_ip        = google_compute_global_address.static.self_link
 }
 
 # ----- SINGLE CONFIGURATION -----
