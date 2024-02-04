@@ -27,7 +27,7 @@ resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   port_range  = each.value
   ip_address  = google_compute_global_address.static.self_link
 
-  target = google_compute_target_tcp_proxy.default[each.key].self_link
+  target = google_compute_target_ssl_proxy.default[each.key].self_link
 }
 
 resource "google_compute_backend_service" "backendservice" {
