@@ -66,11 +66,6 @@ resource "google_compute_instance_group_manager" "default" {
     }
   }
 
-  auto_healing_policies {
-    health_check      = google_compute_health_check.tcp_health_check.id
-    initial_delay_sec = 300
-  }
-
   update_policy {
     type                    = "OPPORTUNISTIC"
     minimal_action          = "REPLACE"
