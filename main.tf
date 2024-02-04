@@ -16,7 +16,7 @@ terraform {
 module "paddy_nw" {
   source                  = "./gcp-cloud-network"
   name                    = "paddy-network"
-  allowed_ports_tcp_anyip = ["22", "443", "1883", "8883"]
+  allowed_ports_tcp_anyip = ["22", "443", "8883"]
 }
 
 module "paddy_backend_instance_template" {
@@ -37,7 +37,7 @@ module "paddy_nlb_proxy_group" {
   region            = var.region
   instance_template = module.paddy_backend_instance_template.self_link
 
-  tcp_target_ports       = { "mqtt" = 1883, "mqtts" = 8883 }
+  tcp_target_ports       = { "mqtts" = 8883 }
   tls_target_ports       = { "https" = 443 }
   health_check_port      = 8883
   ssl_certificate_domain = "mqtt.danielstefani.online"

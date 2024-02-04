@@ -28,7 +28,7 @@ services:
       retries: 3
       start_period: 10s
     ports:
-      - "443:80"
+      - "443:80" # Redirect https traffic to http because we are using a terminating LB
     environment:
       - MQTT_HOST=${BACKEND_MQTT_HOST}
       - MQTT_PORT=${BACKEND_MQTT_PORT}
@@ -52,8 +52,8 @@ services:
         aliases:
           - node1.emqx.io
     ports:
-      - "1883:1883"
+      - "8883:1883" # Redirect mqtts traffic to mqtt because we are using a terminating LB
       - "8083:8083"
       - "8084:8084"
-      - "8883:8883"
+#      - "8883:8883"
       - "18083:18083"
