@@ -1,5 +1,5 @@
-variable "target_ports" {
-  type = map(number)
+variable "target_port" {
+  type = number
 }
 
 variable "static_ip" {}

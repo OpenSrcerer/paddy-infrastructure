@@ -20,9 +20,10 @@ resource "google_compute_target_tcp_proxy" "default" {
 }
 
 module "backend_service_tcp" {
-  source = "../gcp-cloud-backend-service"
+  for_each = var.tcp_target_ports
+  source   = "../gcp-cloud-backend-service"
 
-  target_ports     = var.tcp_target_ports
+  target_port      = each.value
   service_protocol = "TCP"
   proxy            = google_compute_target_tcp_proxy.default.self_link
   health_check     = google_compute_health_check.tcp_health_check.self_link
@@ -40,9 +41,10 @@ resource "google_compute_target_ssl_proxy" "default" {
 }
 
 module "backend_service_tls" {
-  source = "../gcp-cloud-backend-service"
+  for_each = var.tls_target_ports
+  source   = "../gcp-cloud-backend-service"
 
-  target_ports     = var.tls_target_ports
+  target_port      = each.value
   service_protocol = "TCP"
   proxy            = google_compute_target_tcp_proxy.default.self_link
   health_check     = google_compute_health_check.tcp_health_check.self_link
