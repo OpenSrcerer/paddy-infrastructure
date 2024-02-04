@@ -16,7 +16,7 @@ resource "google_compute_target_tcp_proxy" "default" {
   for_each = var.tcp_target_ports
 
   name            = "${var.name}-target-tcp-proxy-${each.key}"
-  backend_service = google_compute_backend_service.backendservice[each.key].self_link
+  backend_service = backend_service_tcp[each.key].backend_service
 }
 
 module "backend_service_tcp" {
@@ -36,7 +36,7 @@ resource "google_compute_target_ssl_proxy" "default" {
   for_each = var.tcp_target_ports
 
   name             = "${var.name}-target-tcp-proxy-${each.key}"
-  backend_service  = google_compute_backend_service.backendservice[each.key].self_link
+  backend_service  = backend_service_tls[each.key].backend_service
   ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
 }
 
@@ -89,7 +89,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   dynamic "named_port" {
-    for_each = var.target_ports
+    for_each = zipmap(var.tcp_target_ports, var.tls_target_ports)
 
     content {
       name = named_port.key
