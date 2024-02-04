@@ -37,12 +37,12 @@ module "paddy_nlb_proxy_group" {
   region            = var.region
   instance_template = module.paddy_backend_instance_template.self_link
 
-  tcp_target_ports       = { "mqtts" = 8883 }
+  tcp_target_ports       = { "mqtt" = 1883, "mqtts" = 8883 }
   tls_target_ports       = { "https" = 443 }
   health_check_port      = 8883
   ssl_certificate_domain = "mqtt.danielstefani.online"
 
-  private_key = var.private_key
+  private_key         = var.private_key
   private_certificate = var.private_certificate
 
   replicas = 1

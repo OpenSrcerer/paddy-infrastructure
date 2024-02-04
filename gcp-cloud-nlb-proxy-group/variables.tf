@@ -35,6 +35,6 @@ variable "max_connections_per_instance" {
   default     = 1000
 }
 
-variable private_key {}
+variable "private_key" {}
 
-variable private_certificate {}
+variable "private_certificate" {}
