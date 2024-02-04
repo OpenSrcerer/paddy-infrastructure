@@ -7,9 +7,11 @@ variable "zone" {}
 variable "instance_template" {}
 
 variable "target_ports" {
-  description = "Target ports to open in the managed group, each is health checked"
+  description = "Target ports to open in the managed group"
   type        = map(number)
 }
+
+variable "health_check_port" {}
 
 variable "replicas" {
   type = number

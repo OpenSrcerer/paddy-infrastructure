@@ -28,7 +28,7 @@ resource "google_compute_backend_service" "backendservice" {
   port_name     = each.key
   protocol      = "TCP"
   timeout_sec   = var.proxy_connection_timeout_seconds # Timeout for all MQTT messages
-  health_checks = [google_compute_health_check.tcp_health_check[each.key].self_link]
+  health_checks = [google_compute_health_check.tcp_health_check.self_link]
 
   backend {
     group                        = google_compute_instance_group_manager.default.instance_group
@@ -38,16 +38,14 @@ resource "google_compute_backend_service" "backendservice" {
 }
 
 resource "google_compute_health_check" "tcp_health_check" {
-  for_each = var.target_ports
-
-  name                = "${var.name}-tcp-health-check-${each.key}"
+  name                = "${var.name}-tcp-health-check"
   check_interval_sec  = 5
   timeout_sec         = 5
   healthy_threshold   = 2
   unhealthy_threshold = 10 # 50 seconds
 
   tcp_health_check {
-    port = each.value
+    port = var.health_check_port
   }
 }
 
@@ -57,13 +55,9 @@ resource "google_compute_instance_group_manager" "default" {
   base_instance_name = var.name
   zone               = var.zone
 
-  dynamic "auto_healing_policies" {
-    for_each = var.target_ports
-
-    content {
-      health_check      = auto_healing_policies.key
-      initial_delay_sec = 300
-    }
+  auto_healing_policies {
+    health_check      = google_compute_health_check.tcp_health_check.id
+    initial_delay_sec = 300
   }
 
   update_policy {
