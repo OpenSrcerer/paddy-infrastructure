@@ -3,8 +3,10 @@ resource "google_compute_global_address" "static" {
 }
 
 resource "google_compute_target_tcp_proxy" "default" {
+  for_each = var.target_ports
+
   name            = "${var.name}-target-tcp-proxy"
-  backend_service = google_compute_backend_service.backendservice.self_link
+  backend_service = google_compute_backend_service.backendservice[each.key].self_link
 }
 
 
@@ -35,7 +37,7 @@ resource "google_compute_backend_service" "backendservice" {
   }
 }
 
-resource "google_compute_health_check" "tcp_health_check" {
+resource "google_compute_health_check" "argetcp_health_check" {
   name                = "${var.name}-tcp-health-check"
   check_interval_sec  = 5
   timeout_sec         = 5
