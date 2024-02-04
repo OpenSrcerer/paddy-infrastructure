@@ -41,7 +41,7 @@ resource "google_compute_backend_service" "tcp_backend_service" {
   health_checks = [google_compute_health_check.tcp_health_check.self_link]
 
   backend {
-    group                        = var.group_manager
+    group                        = google_compute_instance_group_manager.default.self_link
     balancing_mode               = "CONNECTION"
     max_connections_per_instance = var.max_connections_per_instance
   }
@@ -78,7 +78,7 @@ resource "google_compute_backend_service" "tls_backend_service" {
   health_checks = [google_compute_health_check.tcp_health_check.self_link]
 
   backend {
-    group                        = var.group_manager
+    group                        = google_compute_instance_group_manager.default.self_link
     balancing_mode               = "CONNECTION"
     max_connections_per_instance = var.max_connections_per_instance
   }
@@ -121,7 +121,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   dynamic "named_port" {
-    for_each = zipmap(var.tcp_target_ports, var.tls_target_ports)
+    for_each = merge(var.tcp_target_ports, var.tls_target_ports)
 
     content {
       name = named_port.key
