@@ -11,7 +11,7 @@ resource "google_compute_target_tcp_proxy" "default" {
 resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   for_each = var.target_ports
 
-  name        = "${var.name}-lb-forwarding-rule"
+  name        = "${var.name}-lb-forwarding-rule-${each.key}"
   ip_protocol = "TCP"
   port_range  = each.value
   ip_address  = google_compute_global_address.static.self_link
