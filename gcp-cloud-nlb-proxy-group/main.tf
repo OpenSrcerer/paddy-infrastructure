@@ -20,9 +20,10 @@ resource "google_compute_global_forwarding_rule" "forwarding_rule" {
 }
 
 resource "google_compute_backend_service" "backendservice" {
+  for_each = var.target_ports
 
   name          = "${var.name}-lb-backend-service"
-  port_name     = "mqtt"
+  port_name     = each.value
   protocol      = "TCP"
   timeout_sec   = var.proxy_connection_timeout_seconds # Timeout for all MQTT messages
   health_checks = [google_compute_health_check.tcp_health_check.self_link]
