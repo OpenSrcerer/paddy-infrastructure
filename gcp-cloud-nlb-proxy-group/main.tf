@@ -38,14 +38,16 @@ resource "google_compute_backend_service" "backendservice" {
 }
 
 resource "google_compute_health_check" "tcp_health_check" {
-  name                = "${var.name}-tcp-health-check"
+  for_each = var.target_ports
+
+  name                = "${var.name}-tcp-health-check-${each.key}"
   check_interval_sec  = 5
   timeout_sec         = 5
   healthy_threshold   = 2
   unhealthy_threshold = 10 # 50 seconds
 
   tcp_health_check {
-    port = var.health_check_port
+    port = each.value
   }
 }
 
