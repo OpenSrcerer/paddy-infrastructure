@@ -10,7 +10,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   }
 }
 
-resource "google_compute_target_tcp_proxy" "default" {
+resource "google_compute_target_ssl_proxy" "default" {
   for_each = var.target_ports
 
   name             = "${var.name}-target-tcp-proxy-${each.key}"
