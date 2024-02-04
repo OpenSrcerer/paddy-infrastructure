@@ -32,7 +32,7 @@ resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
 }
 
 resource "google_compute_backend_service" "tcp_backend_service" {
-  for_each = var.tls_target_ports
+  for_each = var.tcp_target_ports
 
   name          = "${var.name}-lb-backend-service-${each.key}"
   port_name     = each.key
