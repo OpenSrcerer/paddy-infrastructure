@@ -25,7 +25,7 @@ resource "google_compute_backend_service" "backend_service" {
     port_name     = each.key
     protocol      = "TCP"
     timeout_sec   = var.proxy_connection_timeout_seconds
-    health_checks = [google_compute_health_check.tcp_health_check.self_link]
+    health_checks = [var.health_check]
 
     backend {
         group                        = var.instance_group
