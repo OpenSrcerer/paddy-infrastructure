@@ -8,7 +8,7 @@ variable "instance_template" {}
 
 variable "target_ports" {
   description = "Target ports to open in the managed group"
-  type        = map(string)
+  type        = map(number)
 }
 
 variable "health_check_port" {}

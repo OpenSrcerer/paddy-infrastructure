@@ -38,8 +38,8 @@ module "paddy_nlb_proxy_group" {
   instance_template = module.paddy_backend_instance_template.self_link
 
   target_ports = {
-    "mqtt"  = "1883"
-    "mqtts" = "8883"
+    "mqtt"  = 1883
+    "mqtts" = 8883
   }
   health_check_port = 1883
 
