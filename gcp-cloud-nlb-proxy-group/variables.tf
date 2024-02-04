@@ -6,6 +6,8 @@ variable "zone" {}
 
 variable "instance_template" {}
 
+variable "ssl_certificate_domain" {}
+
 variable "target_ports" {
   description = "Target ports to open in the managed group"
   type        = map(number)

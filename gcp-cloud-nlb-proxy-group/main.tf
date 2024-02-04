@@ -2,11 +2,20 @@ resource "google_compute_global_address" "static" {
   name = "${var.name}-ip-address"
 }
 
+resource "google_compute_managed_ssl_certificate" "default" {
+  name = "${var.name}-ssl-cert"
+
+  managed {
+    domains = [var.ssl_certificate_domain]
+  }
+}
+
 resource "google_compute_target_tcp_proxy" "default" {
   for_each = var.target_ports
 
-  name            = "${var.name}-target-tcp-proxy-${each.key}"
-  backend_service = google_compute_backend_service.backendservice[each.key].self_link
+  name             = "${var.name}-target-tcp-proxy-${each.key}"
+  backend_service  = google_compute_backend_service.backendservice[each.key].self_link
+  ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
 }
 
 
