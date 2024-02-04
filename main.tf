@@ -42,6 +42,9 @@ module "paddy_nlb_proxy_group" {
   health_check_port      = 8883
   ssl_certificate_domain = "mqtt.danielstefani.online"
 
+  private_key = var.private_key
+  private_certificate = var.private_certificate
+
   replicas = 1
 }
 

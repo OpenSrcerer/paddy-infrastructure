@@ -8,6 +8,10 @@ variable "zone" {
   default = "europe-west6-a"
 }
 
+variable private_key {}
+
+variable private_certificate {}
+
 // ---- BACKEND-ENV-VARS ----
 variable "backend_mqtt_host" {
   description = "Broker for the backend MQTT connection"
