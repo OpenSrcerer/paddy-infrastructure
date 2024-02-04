@@ -49,7 +49,7 @@ resource "google_compute_backend_service" "tcp_backend_service" {
 
 # [SECURE TLS CONFIG]
 resource "google_compute_target_ssl_proxy" "default" {
-  for_each = var.tcp_target_ports
+  for_each = var.tls_target_ports
 
   name             = "${var.name}-target-tcp-proxy-${each.key}"
   backend_service  = google_compute_backend_service.tls_backend_service[each.key].self_link
