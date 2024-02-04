@@ -13,7 +13,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
 
 # Self signed cert for MQTT where the client needs to provide their own certificate
 resource "google_compute_ssl_certificate" "default" {
-  name_prefix = "${var.name}-self-ssl-cert"
+  name = "${var.name}-self-ssl-cert"
 
   private_key = var.private_key
   certificate = var.private_certificate
@@ -60,78 +60,17 @@ resource "google_compute_backend_service" "tcp_backend_service" {
   }
 }
 
+module "managed_cert_backend_service" {
+  source = "../gcp-cloud-backend-service"
 
-# [INSECURE TCP CONFIG]
-# resource "google_compute_target_tcp_proxy" "default" {
-#   for_each = var.tcp_target_ports
-#
-#   name            = "${var.name}-target-tcp-proxy-${each.key}"
-#   backend_service = google_compute_backend_service.tcp_backend_service[each.key].self_link
-# }
-#
-# resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
-#   for_each = var.tcp_target_ports
-#
-#   name = "${var.name}-lb-forwarding-rule-${each.key}"
-#
-#   ip_protocol = "TCP"
-#   port_range  = each.value
-#   ip_address  = google_compute_global_address.static.self_link
-#
-#   target = google_compute_target_tcp_proxy.default[each.key].self_link
-# }
-#
-# resource "google_compute_backend_service" "tcp_backend_service" {
-#   for_each = var.tcp_target_ports
-#
-#   name          = "${var.name}-lb-backend-service-${each.key}"
-#   port_name     = each.key
-#   protocol      = "TCP"
-#   timeout_sec   = var.proxy_connection_timeout_seconds
-#   health_checks = [google_compute_health_check.tcp_health_check.self_link]
-#
-#   backend {
-#     group                        = google_compute_instance_group_manager.default.instance_group
-#     balancing_mode               = "CONNECTION"
-#     max_connections_per_instance = var.max_connections_per_instance
-#   }
-# }
-
-# [SECURE TLS CONFIG]
-resource "google_compute_target_ssl_proxy" "https-proxy" {
-  for_each = var.tls_target_ports
-
-  name             = "${var.name}-target-ssl-proxy-${each.key}"
-  backend_service  = google_compute_backend_service.tls_backend_service[each.key].self_link
+  name = "${var.name}-managed-cert"
+  static_ip = google_compute_global_address.static.self_link
+  instance_group = google_compute_instance_group_manager.default.instance_group
+  max_connections_per_instance = var.max_connections_per_instance
+  health_check = google_compute_health_check.tcp_health_check.self_link
+  proxy_connection_timeout_seconds = var.proxy_connection_timeout_seconds
+  target_ports = var.tls_target_ports
   ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
-}
-
-resource "google_compute_global_forwarding_rule" "tls_forwarding_rule" {
-  for_each = var.tls_target_ports
-
-  name = "${var.name}-lb-forwarding-rule-${each.key}"
-
-  ip_protocol = "TCP"
-  port_range  = each.value
-  ip_address  = google_compute_global_address.static.self_link
-
-  target = google_compute_target_ssl_proxy.https-proxy[each.key].self_link
-}
-
-resource "google_compute_backend_service" "tls_backend_service" {
-  for_each = var.tls_target_ports
-
-  name          = "${var.name}-lb-backend-service-${each.key}"
-  port_name     = each.key
-  protocol      = "TCP"
-  timeout_sec   = var.proxy_connection_timeout_seconds
-  health_checks = [google_compute_health_check.tcp_health_check.self_link]
-
-  backend {
-    group                        = google_compute_instance_group_manager.default.instance_group
-    balancing_mode               = "CONNECTION"
-    max_connections_per_instance = var.max_connections_per_instance
-  }
 }
 
 # ----- SINGLE CONFIGURATION -----
