@@ -22,13 +22,13 @@ services:
     image: ghcr.io/opensrcerer/paddy-backend:master
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:1337/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
       interval: 5s
       timeout: 30s
       retries: 3
       start_period: 10s
     ports:
-      - "1337:1337"
+      - "80:443"
     environment:
       - MQTT_HOST=${BACKEND_MQTT_HOST}
       - MQTT_PORT=${BACKEND_MQTT_PORT}

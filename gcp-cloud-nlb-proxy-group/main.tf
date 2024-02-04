@@ -2,48 +2,53 @@ resource "google_compute_global_address" "static" {
   name = "${var.name}-ip-address"
 }
 
-# resource "google_compute_managed_ssl_certificate" "default" {
-#   name = "${var.name}-ssl-cert"
-#
-#   managed {
-#     domains = [var.ssl_certificate_domain]
-#   }
-# }
+resource "google_compute_managed_ssl_certificate" "default" {
+  name = "${var.name}-ssl-cert"
 
+  managed {
+    domains = [var.ssl_certificate_domain]
+  }
+}
+
+# ----- BY PORT CONFIGURATION -----
+# [INSECURE TCP CONFIG]
 resource "google_compute_target_tcp_proxy" "default" {
-  for_each = var.target_ports
+  for_each = var.tcp_target_ports
+
+  name            = "${var.name}-target-tcp-proxy-${each.key}"
+  backend_service = google_compute_backend_service.backendservice[each.key].self_link
+}
+
+module "backend_service_tcp" {
+  source = "../gcp-cloud-backend-service"
+
+  target_ports     = var.tcp_target_ports
+  service_protocol = "TCP"
+  proxy            = google_compute_target_tcp_proxy.default.self_link
+  health_check     = google_compute_health_check.tcp_health_check.self_link
+  group_manager    = google_compute_instance_group_manager.default.self_link
+}
+
+# [SECURE TLS CONFIG]
+resource "google_compute_target_ssl_proxy" "default" {
+  for_each = var.tcp_target_ports
 
   name             = "${var.name}-target-tcp-proxy-${each.key}"
   backend_service  = google_compute_backend_service.backendservice[each.key].self_link
+  ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
 }
 
+module "backend_service_tls" {
+  source = "../gcp-cloud-backend-service"
 
-resource "google_compute_global_forwarding_rule" "forwarding_rule" {
-  for_each = var.target_ports
-
-  name        = "${var.name}-lb-forwarding-rule-${each.key}"
-  ip_protocol = "TCP"
-  port_range  = each.value
-  ip_address  = google_compute_global_address.static.self_link
-
-  target = google_compute_target_tcp_proxy.default[each.key].self_link
+  target_ports     = var.tls_target_ports
+  service_protocol = "TCP"
+  proxy            = google_compute_target_tcp_proxy.default.self_link
+  health_check     = google_compute_health_check.tcp_health_check.self_link
+  group_manager    = google_compute_instance_group_manager.default.self_link
 }
 
-resource "google_compute_backend_service" "backendservice" {
-  for_each = var.target_ports
-
-  name          = "${var.name}-lb-backend-service-${each.key}"
-  port_name     = each.key
-  protocol      = "TCP"
-  timeout_sec   = var.proxy_connection_timeout_seconds # Timeout for all MQTT messages
-  health_checks = [google_compute_health_check.tcp_health_check.self_link]
-
-  backend {
-    group                        = google_compute_instance_group_manager.default.instance_group
-    balancing_mode               = "CONNECTION"
-    max_connections_per_instance = var.max_connections_per_instance
-  }
-}
+# ----- SINGLE CONFIGURATION -----
 
 resource "google_compute_health_check" "tcp_health_check" {
   name                = "${var.name}-tcp-health-check"

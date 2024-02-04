@@ -8,8 +8,13 @@ variable "instance_template" {}
 
 variable "ssl_certificate_domain" {}
 
-variable "target_ports" {
-  description = "Target ports to open in the managed group"
+variable "tcp_target_ports" {
+  description = "TCP target ports to open in the managed group"
+  type        = map(number)
+}
+
+variable "tls_target_ports" {
+  description = "HTTPS (TLS) target ports to open in the managed group"
   type        = map(number)
 }
 
