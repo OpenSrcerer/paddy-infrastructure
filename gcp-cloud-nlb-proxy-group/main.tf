@@ -24,7 +24,7 @@ resource "google_compute_ssl_certificate" "default" {
 }
 
 # ----- BY PORT CONFIGURATION -----
-resource "google_compute_target_ssl_proxy" "default" {
+resource "google_compute_target_ssl_proxy" "mqtts-proxy" {
   for_each = var.tcp_target_ports
 
   name            = "${var.name}-target-ssl-proxy-${each.key}"
@@ -41,7 +41,7 @@ resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
   port_range  = each.value
   ip_address  = google_compute_global_address.static.self_link
 
-  target = google_compute_target_ssl_proxy.default[each.key].self_link
+  target = google_compute_target_ssl_proxy.mqtts-proxy[each.key].self_link
 }
 
 resource "google_compute_backend_service" "tcp_backend_service" {
@@ -98,7 +98,7 @@ resource "google_compute_backend_service" "tcp_backend_service" {
 # }
 
 # [SECURE TLS CONFIG]
-resource "google_compute_target_ssl_proxy" "default" {
+resource "google_compute_target_ssl_proxy" "https-proxy" {
   for_each = var.tls_target_ports
 
   name             = "${var.name}-target-ssl-proxy-${each.key}"
@@ -115,7 +115,7 @@ resource "google_compute_global_forwarding_rule" "tls_forwarding_rule" {
   port_range  = each.value
   ip_address  = google_compute_global_address.static.self_link
 
-  target = google_compute_target_ssl_proxy.default[each.key].self_link
+  target = google_compute_target_ssl_proxy.https-proxy[each.key].self_link
 }
 
 resource "google_compute_backend_service" "tls_backend_service" {
