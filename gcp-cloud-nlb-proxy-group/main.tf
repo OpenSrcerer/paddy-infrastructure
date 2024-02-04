@@ -16,10 +16,10 @@ resource "google_compute_target_tcp_proxy" "default" {
   for_each = var.tcp_target_ports
 
   name            = "${var.name}-target-tcp-proxy-${each.key}"
-  backend_service = google_compute_backend_service.backend_service[each.key].self_link
+  backend_service = google_compute_backend_service.tcp_backend_service[each.key].self_link
 }
 
-resource "google_compute_global_forwarding_rule" "forwarding_rule" {
+resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
   for_each = var.target_ports
 
   name = "${var.name}-lb-forwarding-rule-${each.key}"
@@ -31,7 +31,7 @@ resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   target = var.proxy
 }
 
-resource "google_compute_backend_service" "backendservice" {
+resource "google_compute_backend_service" "tcp_backend_service" {
   for_each = var.tls_target_ports
 
   name          = "${var.name}-lb-backend-service-${each.key}"
@@ -52,11 +52,11 @@ resource "google_compute_target_ssl_proxy" "default" {
   for_each = var.tcp_target_ports
 
   name             = "${var.name}-target-tcp-proxy-${each.key}"
-  backend_service  = google_compute_backend_service.backend_service[each.key].self_link
+  backend_service  = google_compute_backend_service.tls_backend_service[each.key].self_link
   ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
 }
 
-resource "google_compute_global_forwarding_rule" "forwarding_rule" {
+resource "google_compute_global_forwarding_rule" "tls_forwarding_rule" {
   for_each = var.target_ports
 
   name = "${var.name}-lb-forwarding-rule-${each.key}"
@@ -68,7 +68,7 @@ resource "google_compute_global_forwarding_rule" "forwarding_rule" {
   target = var.proxy
 }
 
-resource "google_compute_backend_service" "backendservice" {
+resource "google_compute_backend_service" "tls_backend_service" {
   for_each = var.tls_target_ports
 
   name          = "${var.name}-lb-backend-service-${each.key}"
