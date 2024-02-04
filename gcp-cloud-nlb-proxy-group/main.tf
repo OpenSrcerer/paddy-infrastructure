@@ -20,6 +20,7 @@ resource "google_compute_global_forwarding_rule" "forwarding_rule" {
 }
 
 resource "google_compute_backend_service" "backendservice" {
+
   name          = "${var.name}-lb-backend-service"
   port_name     = "mqtt"
   protocol      = "TCP"
