@@ -28,7 +28,7 @@ resource "google_compute_backend_service" "backendservice" {
   port_name     = each.key
   protocol      = "TCP"
   timeout_sec   = var.proxy_connection_timeout_seconds # Timeout for all MQTT messages
-  health_checks = [google_compute_health_check.tcp_health_check.self_link]
+  health_checks = [google_compute_health_check.tcp_health_check[each.key].self_link]
 
   backend {
     group                        = google_compute_instance_group_manager.default.instance_group
