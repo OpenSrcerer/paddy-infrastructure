@@ -16,7 +16,7 @@ terraform {
 module "paddy_nw" {
   source                  = "./gcp-cloud-network"
   name                    = "paddy-network"
-  allowed_ports_tcp_anyip = ["22", "1883"]
+  allowed_ports_tcp_anyip = ["22", "1883", "8883"]
 }
 
 module "paddy_backend_instance_template" {
@@ -36,7 +36,14 @@ module "paddy_nlb_proxy_group" {
   zone              = var.zone
   region            = var.region
   instance_template = module.paddy_backend_instance_template.self_link
-  replicas          = 1
+
+  target_ports = {
+    "mqtt"  = "1883"
+    "mqtts" = "8883"
+  }
+  health_check_port = 1883
+
+  replicas = 1
 }
 
 # module "paddy_vm" {

@@ -7,10 +7,13 @@ resource "google_compute_target_tcp_proxy" "default" {
   backend_service = google_compute_backend_service.backendservice.self_link
 }
 
+
 resource "google_compute_global_forwarding_rule" "forwarding_rule" {
+  for_each = var.target_ports
+
   name        = "${var.name}-lb-forwarding-rule"
   ip_protocol = "TCP"
-  port_range  = "1883"
+  port_range  = each.value
   ip_address  = google_compute_global_address.static.self_link
 
   target = google_compute_target_tcp_proxy.default.self_link
@@ -20,13 +23,13 @@ resource "google_compute_backend_service" "backendservice" {
   name          = "${var.name}-lb-backend-service"
   port_name     = "mqtt"
   protocol      = "TCP"
-  timeout_sec   = 600 # Timeout for all MQTT messages
+  timeout_sec   = var.proxy_connection_timeout_seconds # Timeout for all MQTT messages
   health_checks = [google_compute_health_check.tcp_health_check.self_link]
 
   backend {
     group                        = google_compute_instance_group_manager.default.instance_group
     balancing_mode               = "CONNECTION"
-    max_connections_per_instance = 1000
+    max_connections_per_instance = var.max_connections_per_instance
   }
 }
 
@@ -38,7 +41,7 @@ resource "google_compute_health_check" "tcp_health_check" {
   unhealthy_threshold = 10 # 50 seconds
 
   tcp_health_check {
-    port = "1883"
+    port = var.health_check_port
   }
 }
 
@@ -64,9 +67,13 @@ resource "google_compute_instance_group_manager" "default" {
     instance_template = var.instance_template
   }
 
-  named_port {
-    name = "mqtt"
-    port = 1883
+  dynamic "named_port" {
+    for_each = var.target_ports
+
+    content {
+      name = named_port.key
+      port = named_port.value
+    }
   }
 
   target_size = var.replicas
