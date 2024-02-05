@@ -24,9 +24,10 @@ module "paddy_backend_instance_template" {
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
-  backend_mqtt_host          = var.backend_mqtt_host
-  backend_mqtt_port          = var.backend_mqtt_port
-  backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
+  backend_mqtt_host               = var.backend_mqtt_host
+  backend_mqtt_port               = var.backend_mqtt_port
+  backend_mqtt_subscriptions      = var.backend_mqtt_subscriptions
+  backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
 }
 
 module "paddy_nlb_proxy_group" {

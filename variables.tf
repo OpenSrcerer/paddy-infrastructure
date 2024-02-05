@@ -32,5 +32,5 @@ variable "backend_mqtt_subscriptions" {
 
 variable "backend_mqtt_authentication_key" {
   description = "The key used to create the JWKS for MQTT authentication"
-  type = string
+  type        = string
 }
