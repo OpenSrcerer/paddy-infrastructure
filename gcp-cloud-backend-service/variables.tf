@@ -10,6 +10,10 @@ variable "health_check" {}
 
 variable "proxy_connection_timeout_seconds" {}
 
+variable "security_policy" {
+  default = null
+}
+
 variable "target_ports" {
   type = map(number)
 }

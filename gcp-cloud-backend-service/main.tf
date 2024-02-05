@@ -21,11 +21,12 @@ resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
 resource "google_compute_backend_service" "backend_service" {
   for_each = var.target_ports
 
-  name          = "${var.name}-lb-backend-service-${each.key}"
-  port_name     = each.key
-  protocol      = "TCP"
-  timeout_sec   = var.proxy_connection_timeout_seconds
-  health_checks = [var.health_check]
+  name            = "${var.name}-lb-backend-service-${each.key}"
+  port_name       = each.key
+  protocol        = "TCP"
+  timeout_sec     = var.proxy_connection_timeout_seconds
+  health_checks   = [var.health_check]
+  security_policy = var.security_policy
 
   backend {
     group                        = var.instance_group

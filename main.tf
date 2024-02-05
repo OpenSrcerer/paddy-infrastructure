@@ -33,6 +33,7 @@ module "paddy_nlb_proxy_group" {
   source = "./gcp-cloud-nlb-proxy-group"
 
   name              = "paddy-machine"
+  project           = var.project
   zone              = var.zone
   region            = var.region
   instance_template = module.paddy_backend_instance_template.self_link
