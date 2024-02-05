@@ -47,6 +47,8 @@ services:
       interval: 5s
       timeout: 25s
       retries: 5
+    volumes:
+      - "./emqx/emqx.conf:/opt/emqx/etc/emqx.conf:ro"
     networks:
       paddy-bridge:
         aliases:

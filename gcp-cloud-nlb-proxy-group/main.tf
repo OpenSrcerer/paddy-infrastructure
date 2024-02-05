@@ -23,16 +23,6 @@ resource "google_compute_ssl_certificate" "default" {
   }
 }
 
-# Setup self managed cert ports with mTLS
-module "self_cert_trust_policy" {
-  source = "../gcp-cloud-mtls-policy"
-
-  name      = var.name
-  project   = var.project
-  root_ca   = var.private_certificate
-  server_ca = var.private_certificate
-}
-
 module "self_cert_backend_service" {
   source = "../gcp-cloud-backend-service"
 
@@ -42,7 +32,6 @@ module "self_cert_backend_service" {
   max_connections_per_instance     = var.max_connections_per_instance
   health_check                     = google_compute_health_check.tcp_health_check.self_link
   proxy_connection_timeout_seconds = var.proxy_connection_timeout_seconds
-  security_policy                  = module.self_cert_trust_policy.self_link
 
   target_ports     = var.tcp_target_ports
   ssl_certificates = [google_compute_ssl_certificate.default.self_link]
