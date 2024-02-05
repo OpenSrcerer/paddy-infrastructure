@@ -27,6 +27,6 @@ resource "google_network_security_server_tls_policy" "default" {
 
   mtls_policy {
     client_validation_mode         = "REJECT_INVALID"
-    client_validation_trust_config = "projects/${local.project_id_digits}/locations/global/trustConfigs/${google_certificate_manager_trust_config.default.name}"
+    client_validation_trust_config = google_certificate_manager_trust_config.default.name
   }
 }
