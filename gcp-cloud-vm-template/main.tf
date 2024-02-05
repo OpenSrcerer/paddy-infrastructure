@@ -38,6 +38,7 @@ resource "google_compute_instance_template" "default_template" {
     backend_mqtt_host          = var.backend_mqtt_host
     backend_mqtt_port          = var.backend_mqtt_port
     backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
+    backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
   }
 
   metadata_startup_script = data.template_file.init.rendered

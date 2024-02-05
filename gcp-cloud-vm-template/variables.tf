@@ -14,3 +14,7 @@ variable "backend_mqtt_port" {
 variable "backend_mqtt_subscriptions" {
   default = "<unset>"
 }
+
+variable "backend_mqtt_authentication_key" {
+  default = "<unset>"
+}

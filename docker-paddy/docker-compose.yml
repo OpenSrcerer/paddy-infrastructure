@@ -22,17 +22,20 @@ services:
     image: ghcr.io/opensrcerer/paddy-backend:master
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
       interval: 5s
       timeout: 30s
       retries: 3
       start_period: 10s
     ports:
       - "443:80" # Redirect https traffic to http because we are using a terminating LB
+      - "80:80"
     environment:
       - MQTT_HOST=${BACKEND_MQTT_HOST}
       - MQTT_PORT=${BACKEND_MQTT_PORT}
       - MQTT_SUBSCRIPTIONS=${BACKEND_MQTT_SUBSCRIPTIONS}
+      - MQTT_AUTHENTICATION_KEY=${BACKEND_MQTT_AUTHENTICATION_KEY}
+      - MQTT_CLIENT_GRACE_PERIOD=30
 
   emqx1:
     image: emqx:5.4.1

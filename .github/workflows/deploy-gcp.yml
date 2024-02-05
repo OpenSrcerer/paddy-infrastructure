@@ -7,6 +7,7 @@ env:
   TF_VAR_backend_mqtt_host: ${{ vars.BACKEND_MQTT_HOST }}
   TF_VAR_backend_mqtt_port: ${{ vars.BACKEND_MQTT_PORT }}
   TF_VAR_backend_mqtt_subscriptions: ${{ secrets.BACKEND_MQTT_SUBSCRIPTIONS }}
+  TF_VAR_backend_mqtt_authentication_key: ${{ secrets.BACKEND_MQTT_AUTHENTICATION_KEY }}
   TF_VAR_private_key: ${{ secrets.PRIVATE_KEY }}
   TF_VAR_private_certificate: ${{ secrets.PRIVATE_CERTIFICATE }}
   GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
