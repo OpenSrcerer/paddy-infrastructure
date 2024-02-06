@@ -8,6 +8,8 @@ sudo chmod o+x /var/lib/google/docker-compose
 mkdir -p /home/chronos/.docker/cli-plugins
 ln -sf /var/lib/google/docker-compose \
   /home/chronos/.docker/cli-plugins/docker-compose
+echo 'export PATH=$PATH:/var/lib/google' >> ~/.bashrc
+source ~/.bashrc
 
 # Step 2: Run actual apps
 
