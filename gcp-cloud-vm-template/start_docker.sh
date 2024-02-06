@@ -1,13 +1,7 @@
 #!  /bin/bash
 
 # Step 1: Install Compose
-sudo curl -sSL \
-  https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 \
-  -o /var/lib/google/docker-compose
-sudo chmod o+x /var/lib/google/docker-compose
-mkdir -p /home/chronos/.docker/cli-plugins
-ln -sf /var/lib/google/docker-compose \
-  /home/chronos/.docker/cli-plugins/docker-compose
+alias docker-compose='docker run --rm docker compose'
 
 # Step 2: Run actual apps
 
@@ -28,7 +22,7 @@ SUCCESS=0
 ATTEMPTS=0
 
 until [ $SUCCESS -eq 1 ] || [ $ATTEMPTS -eq 10 ]; do
-  sudo -E docker compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
+  sudo -E docker-compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
   sleep 10
 done
 
