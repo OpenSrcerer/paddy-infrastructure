@@ -27,7 +27,7 @@ module "paddy_internal_dns" {
   name = "paddy"
   domain_name = "paddy.internal"
   network = module.paddy_nw.self_link
-  dns_records = { "${module.paddy_auth_single_instance.internal_ip}" = "auth" }
+  dns_records = { "10.0.0.2" = "auth" }
 }
 # ---------------------------------
 
@@ -66,6 +66,7 @@ module "paddy_auth_single_instance" {
   source       = "./gcp-cloud-vm"
 
   name         = "auth"
+  internal_ip = "10.0.0.2"
   zone = var.zone
   network_name = module.paddy_nw.network_name
 

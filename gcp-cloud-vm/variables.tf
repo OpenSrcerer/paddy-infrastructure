@@ -2,6 +2,8 @@ variable "name" {}
 
 variable "network_name" {}
 
+variable "internal_ip" {}
+
 variable "zone" {}
 
 // ---- BACKEND-ENV-VARS ----

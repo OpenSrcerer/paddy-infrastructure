@@ -2,6 +2,12 @@ data "template_file" "init" {
   template = file("${path.module}/../vm-startup-scripts/auth-startup-script.sh")
 }
 
+resource "google_compute_address" "internal_ip" {
+  name         = "${var.name}-vm-instance-internal-ip"
+  address_type = "INTERNAL"
+  address      = "10.0.0.2"
+}
+
 resource "google_compute_instance" "default" {
   name                      = "${var.name}-vm-instance"
   machine_type              = "e2-small"
@@ -16,8 +22,10 @@ resource "google_compute_instance" "default" {
 
   network_interface {
     network = var.network_name
+    network_ip = google_compute_address.internal_ip.address
+
     access_config {
-      // Ephemeral IP
+      // auto assigned external ip
     }
   }
 
