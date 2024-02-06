@@ -3,12 +3,12 @@
 # Step 1: Install Compose
 sudo curl -sSL \
 "https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64" \
--o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+-o /home/chronos/docker-compose
+sudo chmod +x /home/chronos/docker-compose
 
 cat << 'EOF' | sudo tee /etc/profile.d/docker_compose.sh
 #!/bin/bash
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/home/chronos
 EOF
 
 sudo chmod +x /etc/profile.d/docker_compose.sh
