@@ -15,7 +15,7 @@ terraform {
 
 # ----- Network Configuration -----
 module "paddy_nw" {
-  source                  = "./gcp-cloud-network"
+  source = "./gcp-cloud-network"
 
   name                    = "paddy-network"
   allowed_ports_tcp_anyip = ["22", "443", "8883"]
@@ -24,22 +24,22 @@ module "paddy_nw" {
 module "paddy_internal_dns" {
   source = "./gcp-cloud-internal-dns"
 
-  name = "paddy"
+  name        = "paddy"
   domain_name = "paddy.internal"
-  network = module.paddy_nw.self_link
+  network     = module.paddy_nw.self_link
   dns_records = { "10.0.0.2" = "auth" }
 }
 # ---------------------------------
 
 module "paddy_backend_instance_template" {
-  source       = "./gcp-cloud-vm-template"
+  source = "./gcp-cloud-vm-template"
 
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
-  backend_mqtt_host               = var.backend_mqtt_host
-  backend_mqtt_port               = var.backend_mqtt_port
-  backend_mqtt_subscriptions      = var.backend_mqtt_subscriptions
+  backend_mqtt_host          = var.backend_mqtt_host
+  backend_mqtt_port          = var.backend_mqtt_port
+  backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
 }
 
 module "gcp_cloud_global_lb_cluster" {
@@ -63,11 +63,11 @@ module "gcp_cloud_global_lb_cluster" {
 }
 
 module "paddy_auth_single_instance" {
-  source       = "./gcp-cloud-vm"
+  source = "./gcp-cloud-vm"
 
   name         = "auth"
-  internal_ip = "10.0.0.2"
-  zone = var.zone
+  internal_ip  = "10.0.0.2"
+  zone         = var.zone
   network_name = module.paddy_nw.network_name
 
   backend_mqtt_authentication_key = var.backend_mqtt_authentication_key

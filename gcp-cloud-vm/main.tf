@@ -21,7 +21,7 @@ resource "google_compute_instance" "default" {
   }
 
   network_interface {
-    network = var.network_name
+    network    = var.network_name
     network_ip = google_compute_address.internal_ip.address
 
     access_config {
