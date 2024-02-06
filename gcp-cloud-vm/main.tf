@@ -5,7 +5,7 @@ data "template_file" "init" {
 resource "google_compute_address" "internal_ip" {
   name         = "${var.name}-vm-instance-internal-ip"
   address_type = "INTERNAL"
-  address      = "10.0.0.2"
+  address      = var.internal_ip
 }
 
 resource "google_compute_instance" "default" {
