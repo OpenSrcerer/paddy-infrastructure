@@ -14,7 +14,7 @@ resource "google_compute_instance_template" "default_template" {
   }
 
   disk {
-    source_image = "cos-109-17800-66-81"
+    source_image = "cos-cloud/cos-stable"
     auto_delete  = true
     boot         = true
   }
