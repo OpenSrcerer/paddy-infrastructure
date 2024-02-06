@@ -46,7 +46,7 @@ module "paddy_backend_instance_template" {
 module "gcp_cloud_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
-  name              = "paddy-machine"
+  name              = "broker-node"
   project           = var.project
   zone              = var.zone
   region            = var.region
