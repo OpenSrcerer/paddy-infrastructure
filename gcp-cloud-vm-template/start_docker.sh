@@ -1,14 +1,21 @@
 #!  /bin/bash
 
+# Step 1: Install Compose
+sudo curl -sSL \
+  https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 \
+  -o /var/lib/google/docker-compose
+sudo chmod o+x /var/lib/google/docker-compose
+mkdir -p ~/.docker/cli-plugins
+ln -sf /var/lib/google/docker-compose \
+  ~/.docker/cli-plugins/docker-compose
+
+# Step 2: Run actual apps
+
 cd /home/chronos
 
 sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
 cd ./paddy-infrastructure/docker
-
-sudo curl -sSL \
-"https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64" \
--o docker-compose
 
 # Get environment variables
 export BACKEND_MQTT_HOST=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/backend_mqtt_host)
@@ -21,7 +28,7 @@ SUCCESS=0
 ATTEMPTS=0
 
 until [ $SUCCESS -eq 1 ] || [ $ATTEMPTS -eq 10 ]; do
-  sudo -E docker-compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
+  sudo -E docker compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
   sleep 10
 done
 
