@@ -70,6 +70,4 @@ module "paddy_auth_single_instance" {
   network_name = module.paddy_nw.network_name
 
   backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
-
-  amount = 1
 }

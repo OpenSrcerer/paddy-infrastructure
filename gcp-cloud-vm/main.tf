@@ -4,7 +4,6 @@ data "template_file" "init" {
 
 resource "google_compute_instance" "default" {
   name                      = "${var.name}-vm-instance"
-  count                     = var.amount
   machine_type              = "e2-small"
   zone                      = var.zone
   allow_stopping_for_update = true
