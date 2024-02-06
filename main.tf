@@ -13,14 +13,26 @@ terraform {
   }
 }
 
+# ----- Network Configuration -----
 module "paddy_nw" {
   source                  = "./gcp-cloud-network"
+
   name                    = "paddy-network"
   allowed_ports_tcp_anyip = ["22", "443", "8883"]
 }
 
+module "paddy_internal_dns" {
+  source = "./gcp-cloud-internal-dns"
+
+  name = "paddy"
+  domain_name = "paddy.internal"
+  dns_records = { "1.2.3.4" = "test" }
+}
+# ---------------------------------
+
 module "paddy_backend_instance_template" {
   source       = "./gcp-cloud-vm-template"
+
   name         = "paddy-machine"
   network_name = module.paddy_nw.network_name
 
@@ -30,8 +42,8 @@ module "paddy_backend_instance_template" {
   backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
 }
 
-module "paddy_nlb_proxy_group" {
-  source = "./gcp-cloud-nlb-proxy-group"
+module "gcp_cloud_global_lb_cluster" {
+  source = "./gcp-cloud-global-lb-cluster"
 
   name              = "paddy-machine"
   project           = var.project
