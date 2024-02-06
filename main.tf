@@ -27,7 +27,7 @@ module "paddy_internal_dns" {
   name = "paddy"
   domain_name = "paddy.internal"
   network = module.paddy_nw.self_link
-  dns_records = { "1.2.3.4" = "test" }
+  dns_records = { "${module.paddy_auth_single_instance.internal_ip}" = "auth" }
 }
 # ---------------------------------
 
@@ -40,7 +40,6 @@ module "paddy_backend_instance_template" {
   backend_mqtt_host               = var.backend_mqtt_host
   backend_mqtt_port               = var.backend_mqtt_port
   backend_mqtt_subscriptions      = var.backend_mqtt_subscriptions
-  backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
 }
 
 module "gcp_cloud_global_lb_cluster" {
@@ -63,14 +62,14 @@ module "gcp_cloud_global_lb_cluster" {
   replicas = 1
 }
 
-# module "paddy_vm" {
-#   source       = "./gcp-cloud-vm"
-#   name         = "paddy-machine"
-#   network_name = module.paddy_nw.network_name
-#
-#   backend_mqtt_host          = var.backend_mqtt_host
-#   backend_mqtt_port          = var.backend_mqtt_port
-#   backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
-#
-#   amount = 1
-# }
+module "paddy_auth_single_instance" {
+  source       = "./gcp-cloud-vm"
+
+  name         = "auth"
+  zone = var.zone
+  network_name = module.paddy_nw.network_name
+
+  backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
+
+  amount = 1
+}
