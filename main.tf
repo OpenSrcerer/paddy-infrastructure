@@ -17,8 +17,9 @@ terraform {
 module "paddy_nw" {
   source = "./gcp-cloud-network"
 
-  name                    = "paddy-network"
-  allowed_ports_tcp_anyip = ["22", "443", "8883"]
+  name                                       = "paddy-network"
+  allowed_internal_communication_ports_block = ["10.172.0.0/20"]
+  allowed_ports_tcp_anyip                    = ["22", "443", "8883"]
 }
 
 module "paddy_internal_dns" {

@@ -4,11 +4,23 @@ resource "google_compute_network" "default" {
 }
 
 resource "google_compute_firewall" "firewall-rule" {
-  name    = "paddy-allowed-ports"
+  name    = "${var.name}-allowed-ports"
   network = google_compute_network.default.name
   allow {
     protocol = "tcp"
     ports    = var.allowed_ports_tcp_anyip
   }
   source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "default" {
+  name    = "${var.name}-allowed-http-in-range"
+  network = google_compute_network.default.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+  source_ranges = var.allowed_internal_communication_ports_block
+  target_tags   = ["allow-80"]
 }
