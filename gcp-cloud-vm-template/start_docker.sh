@@ -2,14 +2,17 @@
 
 # Step 1: Install Compose
 sudo curl -sSL \
-  https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 \
-  -o /var/lib/google/docker-compose
-sudo chmod o+x /var/lib/google/docker-compose
-mkdir -p /home/chronos/.docker/cli-plugins
-ln -sf /var/lib/google/docker-compose \
-  /home/chronos/.docker/cli-plugins/docker-compose
-echo 'export PATH=$PATH:/var/lib/google' >> ~/.bashrc
-source ~/.bashrc
+"https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64" \
+-o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+cat << 'EOF' | sudo tee /etc/profile.d/docker_compose.sh
+#!/bin/bash
+export PATH=$PATH:/usr/local/bin
+EOF
+
+sudo chmod +x /etc/profile.d/docker_compose.sh
+source /etc/profile.d/docker_compose.sh
 
 # Step 2: Run actual apps
 
