@@ -26,6 +26,7 @@ module "paddy_internal_dns" {
 
   name = "paddy"
   domain_name = "paddy.internal"
+  network = module.paddy_nw.self_link
   dns_records = { "1.2.3.4" = "test" }
 }
 # ---------------------------------
