@@ -1,26 +1,14 @@
 #!  /bin/bash
 
-# Step 1: Install Compose
-sudo curl -sSL \
-"https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64" \
--o /home/chronos/docker-compose
-sudo chmod +x /home/chronos/docker-compose
-
-cat << 'EOF' | sudo tee /etc/profile.d/docker_compose.sh
-#!/bin/bash
-export PATH=$PATH:/home/chronos
-EOF
-
-sudo chmod +x /etc/profile.d/docker_compose.sh
-source /etc/profile.d/docker_compose.sh
-
-# Step 2: Run actual apps
-
 cd /home/chronos
 
 sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
 cd ./paddy-infrastructure/docker
+
+sudo curl -sSL \
+"https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64" \
+-o docker-compose
 
 # Get environment variables
 export BACKEND_MQTT_HOST=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/backend_mqtt_host)
