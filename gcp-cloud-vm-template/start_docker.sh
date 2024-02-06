@@ -30,7 +30,7 @@ SUCCESS=0
 ATTEMPTS=0
 
 until [ $SUCCESS -eq 1 ] || [ $ATTEMPTS -eq 10 ]; do
-  sudo -E docker compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
+  sudo -E docker-compose up -d && SUCCESS=1 || ATTEMPTS=$((ATTEMPTS + 1))
   sleep 10
 done
 
