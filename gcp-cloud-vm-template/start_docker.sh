@@ -1,26 +1,21 @@
 #!  /bin/bash
 
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl git -y
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+# Step 1: Install Compose
+sudo curl -sSL \
+  https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 \
+  -o /var/lib/google/docker-compose
+sudo chmod o+x /var/lib/google/docker-compose
+mkdir -p ~/.docker/cli-plugins
+ln -sf /var/lib/google/docker-compose \
+  ~/.docker/cli-plugins/docker-compose
 
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+# Step 2: Run actual apps
 
 cd /home/ubuntu
 
 sudo git clone https://github.com/OpenSrcerer/paddy-infrastructure.git
 
-cd ./paddy-infrastructure/docker-paddy
+cd ./paddy-infrastructure/docker
 
 # Get environment variables
 export BACKEND_MQTT_HOST=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/backend_mqtt_host)

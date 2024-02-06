@@ -14,7 +14,7 @@ resource "google_compute_instance_template" "default_template" {
   }
 
   disk {
-    source_image = "ubuntu-os-pro-cloud/ubuntu-pro-2204-lts"
+    source_image = "cos-109-17800-66-81"
     auto_delete  = true
     boot         = true
   }
