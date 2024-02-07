@@ -22,5 +22,4 @@ resource "google_compute_firewall" "default" {
     ports    = ["80"]
   }
   source_ranges = var.allowed_internal_communication_ports_block
-  target_tags   = ["allow-80"]
 }
