@@ -28,6 +28,11 @@ variable "backend_mqtt_subscriptions" {
   type        = string
 }
 
+variable "backend_auth_service_url" {
+  description = "Authentication service URL"
+  type        = string
+}
+
 // ---- BACKEND AUTHENTICATION KEY ----
 
 variable "backend_mqtt_authentication_key" {
