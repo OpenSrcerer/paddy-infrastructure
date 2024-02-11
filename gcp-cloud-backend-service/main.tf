@@ -49,7 +49,7 @@ resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   ip_protocol           = "TCP"
   port_range            = each.value
   ip_address            = var.internal_static_ip
-  load_balancing_scheme = "INTERNAL_MANAGED"
+  load_balancing_scheme = "INTERNAL"
 
   backend_service = google_compute_region_backend_service.internal_backend_service[each.key].self_link
 }
