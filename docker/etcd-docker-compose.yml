@@ -2,10 +2,11 @@ version: "3.8"
 
 services:
   etcd:
-    ports:
-      - "4001:4001"
-      - "2380:2380"
-      - "2379:2379"
+#    ports:
+#      - "4001:4001"
+#      - "2380:2380"
+#      - "2379:2379"
+    network_mode: "host"
     container_name: etcd
     image: quay.io/coreos/etcd:v3.5.12
     environment:
