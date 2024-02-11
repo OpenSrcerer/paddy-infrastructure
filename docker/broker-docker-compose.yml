@@ -20,7 +20,7 @@ services:
     volumes:
       - "./emqx/emqx.conf:/opt/emqx/etc/emqx.conf:ro"
     network_mode: host
-    ports:
+#    ports:
 #      - "8083:8083"           # ws
 #      - "8084:8084"           # wss
 #      - "8883:8883"           # This is actually a TCP listener (check emqx.conf) but used like this because of terminating LB
