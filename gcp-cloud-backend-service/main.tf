@@ -48,7 +48,7 @@ resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
 resource "google_compute_backend_service" "backend_service" {
   for_each = var.target_ports
 
-  name          = "${var.name}-lb-backend-service-${each.key}"
+  name          = "${var.name}-backend-service-${each.key}"
   port_name     = each.key
   protocol      = "TCP"
   timeout_sec   = var.proxy_connection_timeout_seconds
