@@ -121,6 +121,8 @@ module "broker_global_lb_cluster" {
   tcp_target_ports       = { "mqtts" = 8883 }
   health_check_port      = 8883
 
+  ssl_certificates = module.paddy_certs.self_ssl_cert
+
   replicas = 2
 }
 
@@ -135,6 +137,8 @@ module "backend_global_lb_cluster" {
 
   tcp_target_ports       = { "https" = 443 }
   health_check_port      = 443
+
+  ssl_certificates = module.paddy_certs.managed_ssl_cert
 
   replicas = 1
 }
