@@ -44,7 +44,7 @@ resource "google_compute_region_instance_group_manager" "default" {
     type                    = "PROACTIVE"
     minimal_action          = "REPLACE"
     replacement_method      = "SUBSTITUTE"
-    max_unavailable_percent = 0
+    max_unavailable_percent = 50
 #     max_surge_percent       = 100
   }
 
