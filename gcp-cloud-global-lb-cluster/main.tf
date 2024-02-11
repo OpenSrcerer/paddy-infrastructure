@@ -1,8 +1,12 @@
 module "backend_service" {
   source = "../gcp-cloud-backend-service"
 
-  name                             = "${var.name}-backend-service"
-  static_ip                        = var.static_external_ip
+  name   = "${var.name}-backend-service"
+  region = var.region
+
+  global_static_ip   = var.static_external_ip
+  internal_static_ip = var.static_internal_ip
+
   instance_group                   = google_compute_instance_group_manager.default.instance_group
   max_connections_per_instance     = var.max_connections_per_instance
   health_check                     = google_compute_health_check.tcp_health_check.self_link

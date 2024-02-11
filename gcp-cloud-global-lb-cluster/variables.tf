@@ -6,6 +6,8 @@ variable "zone" {}
 
 variable "static_external_ip" {}
 
+variable "static_internal_ip" {}
+
 variable "instance_template" {}
 
 variable "health_check_port" {}

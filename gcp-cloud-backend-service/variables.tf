@@ -1,6 +1,10 @@
 variable "name" {}
 
-variable "static_ip" {}
+variable "region" {}
+
+variable "global_static_ip" {}
+
+variable "internal_static_ip" {}
 
 variable "instance_group" {}
 

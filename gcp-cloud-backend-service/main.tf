@@ -1,7 +1,8 @@
-resource "google_compute_target_ssl_proxy" "default" {
+# ---- GLOBAL LOAD BALANCER ----
+resource "google_compute_target_ssl_proxy" "global_proxy" {
   for_each = var.target_ports
 
-  name             = "${var.name}-target-ssl-proxy-${each.key}"
+  name             = "${var.name}-global-target-ssl-proxy-${each.key}"
   backend_service  = google_compute_backend_service.backend_service[each.key].self_link
   ssl_certificates = var.ssl_certificates
 
@@ -11,14 +12,37 @@ resource "google_compute_target_ssl_proxy" "default" {
 resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
   for_each = var.target_ports
 
-  name = "${var.name}-lb-forwarding-rule-${each.key}"
+  name = "${var.name}-global-lb-forwarding-rule-${each.key}"
 
   ip_protocol = "TCP"
   port_range  = each.value
-  ip_address  = var.static_ip
+  ip_address  = var.global_static_ip
 
-  target = google_compute_target_ssl_proxy.default[each.key].self_link
+  target = google_compute_target_ssl_proxy.global_proxy[each.key].self_link
 }
+# ------------------------------
+
+# ---- INTERNAL LOAD BALANCER ----
+resource "google_compute_target_tcp_proxy" "internal_proxy" {
+  for_each = var.target_ports
+
+  name            = "${var.name}-internal-target-ssl-proxy-${each.key}"
+  backend_service = google_compute_backend_service.backend_service[each.key].self_link
+}
+
+resource "google_compute_forwarding_rule" "name" {
+  for_each = var.target_ports
+
+  region = var.region
+  name   = "${var.name}-internal-lb-forwarding-rule-${each.key}"
+
+  ip_protocol = "TCP"
+  port_range  = each.value
+  ip_address  = var.internal_static_ip
+
+  target = google_compute_target_tcp_proxy.internal_proxy[each.key].self_link
+}
+# ------------------------------
 
 resource "google_compute_backend_service" "backend_service" {
   for_each = var.target_ports
