@@ -1,57 +1,16 @@
-resource "google_compute_global_address" "static" {
-  name = "${var.name}-ip-address"
-}
-
-# Managed certificate for HTTPS calls (where client can't provide their own)
-resource "google_compute_managed_ssl_certificate" "default" {
-  name = "${var.name}-ssl-cert"
-
-  managed {
-    domains = [var.ssl_certificate_domain]
-  }
-}
-
-# Self signed cert for MQTT where the client needs to provide their own certificate
-resource "google_compute_ssl_certificate" "default" {
-  name = "${var.name}-self-ssl-cert"
-
-  private_key = var.private_key
-  certificate = var.private_certificate
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-module "self_cert_backend_service" {
+module "backend_service" {
   source = "../gcp-cloud-backend-service"
 
-  name                             = "${var.name}-managed-cert"
-  static_ip                        = google_compute_global_address.static.self_link
+  name                             = "${var.name}-backend-service"
+  static_ip                        = var.static_external_ip
   instance_group                   = google_compute_instance_group_manager.default.instance_group
   max_connections_per_instance     = var.max_connections_per_instance
   health_check                     = google_compute_health_check.tcp_health_check.self_link
   proxy_connection_timeout_seconds = var.proxy_connection_timeout_seconds
 
   target_ports     = var.tcp_target_ports
-  ssl_certificates = [google_compute_ssl_certificate.default.self_link]
+  ssl_certificates = var.ssl_certificates
 }
-
-module "managed_cert_backend_service" {
-  source = "../gcp-cloud-backend-service"
-
-  name                             = "${var.name}-managed-cert"
-  static_ip                        = google_compute_global_address.static.self_link
-  instance_group                   = google_compute_instance_group_manager.default.instance_group
-  max_connections_per_instance     = var.max_connections_per_instance
-  health_check                     = google_compute_health_check.tcp_health_check.self_link
-  proxy_connection_timeout_seconds = var.proxy_connection_timeout_seconds
-
-  target_ports     = var.tls_target_ports
-  ssl_certificates = [google_compute_managed_ssl_certificate.default.self_link]
-}
-
-# ----- SINGLE CONFIGURATION -----
 
 resource "google_compute_health_check" "tcp_health_check" {
   name                = "${var.name}-tcp-health-check"
@@ -88,7 +47,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   dynamic "named_port" {
-    for_each = merge(var.tcp_target_ports, var.tls_target_ports)
+    for_each = var.tcp_target_ports
 
     content {
       name = named_port.key

@@ -1,0 +1,31 @@
+version: "3.8"
+
+networks:
+  paddy-bridge:
+    driver: bridge
+
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
+  
+  paddy-backend:
+    container_name: paddy-backend
+    networks:
+      paddy-bridge:
+        aliases:
+          - paddy.backend.io
+    image: ghcr.io/opensrcerer/paddy-backend:master
+    restart: on-failure
+    ports:
+      - "443:80" # Redirect https traffic to http because we are using a terminating LB
+      - "80:80"
+    environment:
+      - MQTT_HOST=${BACKEND_MQTT_HOST}
+      - MQTT_PORT=${BACKEND_MQTT_PORT}
+      - MQTT_SUBSCRIPTIONS=${BACKEND_MQTT_SUBSCRIPTIONS}
+      - QUARKUS_REST_CLIENT_JWT_URL=${BACKEND_AUTH_SERVICE_URL}

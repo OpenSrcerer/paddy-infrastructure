@@ -1,10 +1,10 @@
 data "template_file" "init" {
-  template = file("${path.module}/../vm-startup-scripts/broker-startup-script.sh")
+  template = var.startup_script
 }
 
 resource "google_compute_instance_template" "default_template" {
   name_prefix    = "${var.name}-"
-  machine_type   = "e2-small"
+  machine_type   = var.instance_type
   can_ip_forward = false
 
   scheduling {

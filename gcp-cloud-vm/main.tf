@@ -10,7 +10,7 @@ resource "google_compute_address" "internal_ip" {
 
 resource "google_compute_instance" "default" {
   name                      = "${var.name}-vm-instance"
-  machine_type              = "e2-micro"
+  machine_type              = var.instance_type
   zone                      = var.zone
   allow_stopping_for_update = true
 

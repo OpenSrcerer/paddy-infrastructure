@@ -2,6 +2,12 @@ variable "name" {}
 
 variable "network_name" {}
 
+variable "instance_type" {}
+
+variable "startup_script" {
+  type = string
+}
+
 // ---- BACKEND-ENV-VARS ----
 variable "backend_mqtt_host" {
   default = "<unset>"

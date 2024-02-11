@@ -5,46 +5,10 @@ networks:
     driver: bridge
 
 services:
-  watchtower:
-    container_name: watchtower
-    image: containrrr/watchtower
+  emqx:
+    image: emqx:5.5.0
+    container_name: emqx
     restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30
-  
-  paddy-backend:
-    container_name: paddy-backend
-    networks:
-      paddy-bridge:
-        aliases:
-          - paddy.backend.io
-    image: ghcr.io/opensrcerer/paddy-backend:master
-    restart: on-failure
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost/api/v1/health"]
-#      interval: 5s
-#      timeout: 30s
-#      retries: 3
-#      start_period: 10s
-    ports:
-      - "443:80" # Redirect https traffic to http because we are using a terminating LB
-      - "80:80"
-    environment:
-      - MQTT_HOST=${BACKEND_MQTT_HOST}
-      - MQTT_PORT=${BACKEND_MQTT_PORT}
-      - MQTT_SUBSCRIPTIONS=${BACKEND_MQTT_SUBSCRIPTIONS}
-      - MQTT_CLIENT_GRACE_PERIOD=30
-      - QUARKUS_REST_CLIENT_JWT_URL=${BACKEND_AUTH_SERVICE_URL}
-
-  emqx1:
-    image: emqx:5.4.1
-    container_name: emqx1
-    restart: on-failure
-    environment:
-      - "EMQX_NODE_NAME=emqx@node1.emqx.io"
-      - "EMQX_CLUSTER__DISCOVERY_STRATEGY=static"
-      - "EMQX_CLUSTER__STATIC__SEEDS=[emqx@node1.emqx.io,emqx@node2.emqx.io]"
     healthcheck:
       test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
       interval: 5s
@@ -52,10 +16,10 @@ services:
       retries: 5
     volumes:
       - "./emqx/emqx.conf:/opt/emqx/etc/emqx.conf:ro"
-    networks:
-      paddy-bridge:
-        aliases:
-          - node1.emqx.io
+#    networks:
+#      paddy-bridge:
+#        aliases:
+#          - node1.emqx.io
     ports:
       - "8883:1883" # Redirect mqtts traffic to mqtt because we are using a terminating LB
       - "8083:8083"
