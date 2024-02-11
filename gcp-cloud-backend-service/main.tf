@@ -74,7 +74,7 @@ resource "google_compute_region_backend_service" "internal_backend_service" {
 
   backend {
     group          = var.instance_group
-    balancing_mode = "UTILIZATION"
+    balancing_mode = "CONNECTION"
   }
 }
 # ------------------------------
