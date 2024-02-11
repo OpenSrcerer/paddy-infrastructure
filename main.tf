@@ -20,9 +20,9 @@ module "paddy_nw" {
   source = "./gcp-cloud-network"
 
   name                                       = "paddy-network"
-  allowed_internal_communication_ports       = ["80", "2379", "2380"] # HTTP, ETCD, ETCD
-  allowed_internal_communication_ports_block = ["10.172.0.0/20"]      # Internal region block
-  allowed_ports_tcp_anyip                    = ["22", "443", "8883"]  # Incoming ports from IGW
+  allowed_internal_communication_ports       = ["80", "2379", "4370", "5369"] # HTTP, ETCD, EMQX Clustering...
+  allowed_internal_communication_ports_block = ["10.172.0.0/20"]              # Internal region block
+  allowed_ports_tcp_anyip                    = ["22", "443", "8883"]          # Incoming ports from IGW
 }
 
 module "paddy_internal_dns" {

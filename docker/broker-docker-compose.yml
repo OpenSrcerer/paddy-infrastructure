@@ -23,8 +23,10 @@ services:
 #        aliases:
 #          - node1.emqx.io
     ports:
-      - "8883:1883" # Redirect mqtts traffic to mqtt because we are using a terminating LB
-      - "8083:8083"
-      - "8084:8084"
-#      - "8883:8883"
-      - "18083:18083"
+      - "8883:1883"           # Redirect mqtts traffic to mqtt because we are using a terminating LB
+#      - "8083:8083"          # ws
+#      - "8084:8084"          # wss
+#      - "8883:8883"          # mqtts
+      - "18083:18083"         # web dashboard
+      - "4370:4370"           # Erlang port mapper (epmd) (clustering)
+      - "5369:5369"           # Cluster RPC port
