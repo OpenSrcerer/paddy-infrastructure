@@ -30,7 +30,7 @@ resource "google_compute_target_tcp_proxy" "internal_proxy" {
   backend_service = google_compute_backend_service.backend_service[each.key].self_link
 }
 
-resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
+resource "google_compute_global_forwarding_rule" "tcp_internal_forwarding_rule" {
   for_each = var.target_ports
 
   name   = "${var.name}-intlb-fwd-rule-${each.key}"
