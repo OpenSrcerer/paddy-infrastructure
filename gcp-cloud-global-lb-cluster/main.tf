@@ -40,12 +40,16 @@ resource "google_compute_region_instance_group_manager" "default" {
     initial_delay_sec = 300
   }
 
+  instance_lifecycle_policy {
+    force_update_on_repair = "YES"
+  }
+
   update_policy {
     type                           = "PROACTIVE"
     minimal_action                 = "RESTART"
     most_disruptive_allowed_action = "REPLACE"
     max_surge_fixed                = var.replicas
-    max_unavailable_fixed          = ceil(var.replicas / 2)
+    max_unavailable_fixed          = (ceil(var.replicas / 2) < 3) ? 3 : ceil(var.replicas / 2) # Minimum is number of zones
 #     replacement_method      = "SUBSTITUTE"
 #     max_unavailable_percent = 50
 #     max_surge_percent       = 100
