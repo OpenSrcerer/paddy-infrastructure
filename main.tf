@@ -39,6 +39,7 @@ module "paddy_internal_dns" {
 
 module "paddy_certs" {
   source = "./gcp-cloud-certs"
+  name = "paddy"
 
   ssl_certificate_domain = "mqtt.danielstefani.online"
   private_key         = var.private_key

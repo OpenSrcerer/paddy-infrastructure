@@ -1,3 +1,5 @@
+variable "name" {}
+
 variable "ssl_certificate_domain" {
     description = "For the managed certificate"
 }
