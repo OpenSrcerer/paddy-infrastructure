@@ -10,11 +10,11 @@ services:
     image: quay.io/coreos/etcd:v3.5.12
     environment:
       - ETCD_NAME=paddy-etcd
-      - ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379,http://0.0.0.0:4001
+      - ETCD_LISTEN_CLIENT_URLS=https://0.0.0.0:2379,https://0.0.0.0:4001
       - ETCD_LISTEN_PEER_URLS=https://0.0.0.0:2380
       - ETCD_ADVERTISE_CLIENT_URLS=https://${ETCD_HOST_IP}:2379,https://${ETCD_HOST_IP}:4001
       - ETCD_INITIAL_ADVERTISE_PEER_URLS=https://${ETCD_HOST_IP}:2380
-      - ETCD_INITIAL_CLUSTER=paddy-etcd=http://${ETCD_HOST_IP}:2380
+      - ETCD_INITIAL_CLUSTER=paddy-etcd=https://${ETCD_HOST_IP}:2380
       - ETCD_INITIAL_CLUSTER_STATE=new
       - ETCD_INITIAL_CLUSTER_TOKEN=paddy-etcd
       - ETCD_AUTO_TLS=true
