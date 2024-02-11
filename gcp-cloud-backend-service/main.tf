@@ -74,7 +74,6 @@ resource "google_compute_region_backend_service" "internal_backend_service" {
   backend {
     group                        = var.instance_group
     balancing_mode               = "CONNECTION"
-    max_connections_per_instance = var.max_connections_per_instance
   }
 }
 # ------------------------------
