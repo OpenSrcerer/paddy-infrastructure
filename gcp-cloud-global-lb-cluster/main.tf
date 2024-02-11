@@ -40,7 +40,7 @@ resource "google_compute_instance_group_manager" "default" {
     minimal_action          = "REPLACE"
     replacement_method      = "RECREATE"
     max_unavailable_percent = 0
-    max_surge_percent = 150
+    max_surge_percent       = 50
   }
 
   version {
