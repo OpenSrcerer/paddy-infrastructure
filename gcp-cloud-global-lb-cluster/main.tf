@@ -2,6 +2,7 @@ module "backend_service" {
   source = "../gcp-cloud-backend-service"
 
   name   = "${var.name}-backend-service"
+  region = var.region
 
   global_static_ip   = var.static_external_ip
   internal_static_ip = var.static_internal_ip
