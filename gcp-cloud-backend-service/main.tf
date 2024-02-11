@@ -66,7 +66,6 @@ resource "google_compute_region_backend_service" "internal_backend_service" {
 
   region        = var.region
   name          = "${var.name}-intbackend-service-${each.key}"
-  port_name     = each.key
   protocol      = "TCP"
   timeout_sec   = var.proxy_connection_timeout_seconds
   health_checks = [var.health_check]
