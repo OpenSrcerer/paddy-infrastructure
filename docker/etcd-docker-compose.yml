@@ -1,18 +1,21 @@
-name: paddy-etcd
+version: "3.8"
 
 services:
-    etcd:
-        ports:
-            - 4001:4001
-            - 2380:2380
-            - 2379:2379
-        container_name: etcd
-        image: quay.io/coreos/etcd:v2.3.8
-        command: -name etcd0 -advertise-client-urls
-            http://${HostIP}:2379,http://${HostIP}:4001 -listen-client-urls
-            http://0.0.0.0:2379,http://0.0.0.0:4001 -initial-advertise-peer-urls
-            http://${HostIP}:2380 -listen-peer-urls http://0.0.0.0:2380
-            -initial-cluster-token etcd-cluster-1 -initial-cluster
-            etcd0=http://${HostIP}:2380 -initial-cluster-state new
-        environment:
-          - HostIP=${ETCD_HOST_IP}
+  etcd:
+    ports:
+      - "4001:4001"
+      - "2380:2380"
+      - "2379:2379"
+    container_name: etcd
+    image: quay.io/coreos/etcd:v3.5.12
+    environment:
+      - ETCD_NAME=paddy-etcd
+      - ETCD_LISTEN_CLIENT_URLS=https://${ETCD_HOST_IP}:2379,http://0.0.0.0:2379,http://0.0.0.0:4001
+      - ETCD_LISTEN_PEER_URLS=https://${ETCD_HOST_IP}:2380,https://0.0.0.0:2380
+      - ETCD_ADVERTISE_CLIENT_URLS=https://${ETCD_HOST_IP}:2379,https://${ETCD_HOST_IP}:4001
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=https://${ETCD_HOST_IP}:2380
+      - ETCD_INITIAL_CLUSTER=etcd0=http://${ETCD_HOST_IP}:2380
+      - ETCD_INITIAL_CLUSTER_STATE=new
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-paddy
+      - ETCD_AUTO_TLS=true
+      - ETCD_PEER_AUTO_TLS=true
