@@ -60,7 +60,7 @@ module "paddy_auth_single_instance" {
   name          = "auth"
   internal_ip   = "10.172.0.2"
   zone          = var.zone
-  instance_type = "e2-micro"
+  instance_type = "f1-micro"
   network_name  = module.paddy_nw.network_name
 
   startup_script = file("${path.module}/vm-startup-scripts/auth-startup-script.sh")
