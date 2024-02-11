@@ -29,11 +29,11 @@ resource "google_compute_health_check" "tcp_health_check" {
   }
 }
 
-resource "google_compute_instance_group_manager" "default" {
+resource "google_compute_region_instance_group_manager" "default" {
   name = "${var.name}-instance-group"
 
   base_instance_name = var.name
-  zone               = var.zone
+  region             = var.region
 
   auto_healing_policies {
     health_check      = google_compute_health_check.tcp_health_check.id
