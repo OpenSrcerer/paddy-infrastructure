@@ -47,7 +47,6 @@ resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   name    = "${var.name}-intlb-fwd-rule-${each.key}"
 
   ip_protocol           = "TCP"
-  port_range            = each.value
   ip_address            = var.internal_static_ip
   load_balancing_scheme = "INTERNAL"
 
