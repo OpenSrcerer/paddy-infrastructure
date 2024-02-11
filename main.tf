@@ -107,7 +107,7 @@ module "paddy_broker_instance_template" {
 
   name          = "paddy-broker"
   network_name  = module.paddy_nw.network_name
-  instance_type = "e2-small"
+  instance_type = "f1-micro"
 
   startup_script = file("${path.module}/vm-startup-scripts/broker-startup-script.sh")
 }
@@ -117,7 +117,7 @@ module "paddy_backend_instance_template" {
 
   name          = "paddy-backend"
   network_name  = module.paddy_nw.network_name
-  instance_type = "e2-micro"
+  instance_type = "f1-micro"
 
   backend_mqtt_host          = var.backend_mqtt_host
   backend_mqtt_port          = var.backend_mqtt_port
@@ -147,7 +147,7 @@ module "broker_global_lb_cluster" {
 
   ssl_certificates = [module.paddy_certs.self_ssl_cert]
 
-  replicas = 2
+  replicas = 4
 }
 
 module "backend_global_lb_cluster" {
