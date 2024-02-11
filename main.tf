@@ -128,9 +128,10 @@ module "paddy_backend_instance_template" {
 module "broker_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
-  name   = "broker-cluster"
-  zone   = var.zone
-  region = var.region
+  name    = "broker-cluster"
+  zone    = var.zone
+  region  = var.region
+  network = module.paddy_nw.self_link
 
   static_external_ip = google_compute_global_address.static-global-ip.self_link
   static_internal_ip = "10.172.0.5"
@@ -147,9 +148,10 @@ module "broker_global_lb_cluster" {
 module "backend_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
-  name   = "backend-cluster"
-  zone   = var.zone
-  region = var.region
+  name    = "backend-cluster"
+  zone    = var.zone
+  region  = var.region
+  network = module.paddy_nw.self_link
 
   static_external_ip = google_compute_global_address.static-global-ip.self_link
   static_internal_ip = "10.172.0.6"

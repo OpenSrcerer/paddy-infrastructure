@@ -39,9 +39,10 @@ resource "google_compute_backend_service" "global_backend_service" {
 # ------------------------------
 
 # ---- INTERNAL LOAD BALANCER ----
-resource "google_compute_target_tcp_proxy" "internal_proxy" {
+resource "google_compute_region_target_tcp_proxy" "internal_proxy" {
   for_each = var.target_ports
 
+  region = var.region
   name   = "${var.name}-internal-target-ssl-proxy-${each.key}"
 
   backend_service = google_compute_region_backend_service.internal_backend_service[each.key].self_link
@@ -50,14 +51,16 @@ resource "google_compute_target_tcp_proxy" "internal_proxy" {
 resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   for_each = var.target_ports
 
-  region = var.region
-  name   = "${var.name}-intlb-fwd-rule-${each.key}"
+  region  = var.region
+  network = var.network
+  name    = "${var.name}-intlb-fwd-rule-${each.key}"
 
-  ip_protocol = "TCP"
-  port_range  = each.value
-  ip_address  = var.internal_static_ip
+  ip_protocol           = "TCP"
+  port_range            = each.value
+  ip_address            = var.internal_static_ip
+  load_balancing_scheme = "INTERNAL_MANAGED"
 
-  target = google_compute_target_tcp_proxy.internal_proxy[each.key].self_link
+  target = google_compute_region_target_tcp_proxy.internal_proxy[each.key].self_link
 }
 
 resource "google_compute_region_backend_service" "internal_backend_service" {
@@ -70,8 +73,8 @@ resource "google_compute_region_backend_service" "internal_backend_service" {
   health_checks = [var.health_check]
 
   backend {
-    group                        = var.instance_group
-    balancing_mode               = "CONNECTION"
+    group          = var.instance_group
+    balancing_mode = "UTILIZATION"
   }
 }
 # ------------------------------

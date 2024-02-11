@@ -2,6 +2,8 @@ variable "name" {}
 
 variable "region" {}
 
+variable "network" {}
+
 variable "zone" {}
 
 variable "static_external_ip" {}
