@@ -42,7 +42,7 @@ resource "google_compute_backend_service" "global_backend_service" {
 resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   region  = var.region
   network = var.network
-  name    = "${var.name}-intlb-fwd-rule-${each.key}"
+  name    = "${var.name}-intlb-fwd-rule"
 
   ip_protocol           = "TCP"
   ports                 = toset(var.target_ports)
