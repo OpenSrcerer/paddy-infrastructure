@@ -17,5 +17,6 @@ services:
       - ETCD_INITIAL_CLUSTER=paddy-etcd=http://${ETCD_HOST_IP}:2380
       - ETCD_INITIAL_CLUSTER_STATE=new
       - ETCD_INITIAL_CLUSTER_TOKEN=paddy-etcd
+      - ETCD_LOG_LEVEL=debug
 #      - ETCD_AUTO_TLS=true
 #      - ETCD_PEER_AUTO_TLS=true
