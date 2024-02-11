@@ -40,24 +40,21 @@ resource "google_compute_backend_service" "global_backend_service" {
 
 # ---- INTERNAL LOAD BALANCER ----
 resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
-  for_each = var.target_ports
-
   region  = var.region
   network = var.network
   name    = "${var.name}-intlb-fwd-rule-${each.key}"
 
   ip_protocol           = "TCP"
+  ports                 = toset(var.target_ports)
   ip_address            = var.internal_static_ip
   load_balancing_scheme = "INTERNAL"
 
-  backend_service = google_compute_region_backend_service.internal_backend_service[each.key].self_link
+  backend_service = google_compute_region_backend_service.internal_backend_service.self_link
 }
 
 resource "google_compute_region_backend_service" "internal_backend_service" {
-  for_each = var.target_ports
-
   region        = var.region
-  name          = "${var.name}-intbackend-service-${each.key}"
+  name          = "${var.name}-intbackend-service"
   protocol      = "TCP"
   timeout_sec   = var.proxy_connection_timeout_seconds
   health_checks = [var.health_check]
