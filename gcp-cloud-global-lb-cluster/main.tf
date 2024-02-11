@@ -41,10 +41,12 @@ resource "google_compute_region_instance_group_manager" "default" {
   }
 
   update_policy {
-    type                    = "PROACTIVE"
-    minimal_action          = "REPLACE"
-    replacement_method      = "SUBSTITUTE"
-    max_unavailable_percent = 50
+    type                           = "PROACTIVE"
+    minimal_action                 = "RESTART"
+    most_disruptive_allowed_action = "REPLACE"
+    max_surge_fixed                = var.replicas
+#     replacement_method      = "SUBSTITUTE"
+#     max_unavailable_percent = 50
 #     max_surge_percent       = 100
   }
 
