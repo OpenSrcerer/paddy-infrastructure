@@ -20,8 +20,9 @@ module "paddy_nw" {
   source = "./gcp-cloud-network"
 
   name                                       = "paddy-network"
-  allowed_internal_communication_ports_block = ["10.172.0.0/20"]
-  allowed_ports_tcp_anyip                    = ["22", "443", "8883"]
+  allowed_internal_communication_ports = ["80", "2379", "2380"] # HTTP, ETCD, ETCD
+  allowed_internal_communication_ports_block = ["10.172.0.0/20"] # Internal region block
+  allowed_ports_tcp_anyip                    = ["22", "443", "8883"] # Incoming ports from IGW
 }
 
 module "paddy_internal_dns" {
@@ -33,7 +34,7 @@ module "paddy_internal_dns" {
   dns_records = {
     "10.172.0.2" = "auth"
     "10.172.0.3" = "postgres-master"
-    "10.172.0.4" = "backend"
+    "10.172.0.4" = "etcd"
   }
 }
 
@@ -77,6 +78,18 @@ module "postgres_master_single_instance" {
   network_name = module.paddy_nw.network_name
 
   startup_script = file("${path.module}/vm-startup-scripts/db-master-startup-script.sh")
+}
+
+module "etcd_single_instance" {
+  source = "./gcp-cloud-vm"
+
+  name         = "etcd"
+  internal_ip  = "10.172.0.4"
+  zone         = var.zone
+  instance_type = "e2-micro"
+  network_name = module.paddy_nw.network_name
+
+  startup_script = file("${path.module}/vm-startup-scripts/etcd-startup-script.sh")
 }
 # ------------------------------
 

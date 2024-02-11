@@ -14,12 +14,12 @@ resource "google_compute_firewall" "firewall-rule" {
 }
 
 resource "google_compute_firewall" "default" {
-  name    = "${var.name}-allowed-http-in-range"
+  name    = "${var.name}-internal-allowed-ports"
   network = google_compute_network.default.name
 
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = var.allowed_internal_communication_ports
   }
   source_ranges = var.allowed_internal_communication_ports_block
 }
