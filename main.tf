@@ -20,9 +20,9 @@ module "paddy_nw" {
   source = "./gcp-cloud-network"
 
   name                                       = "paddy-network"
-  allowed_internal_communication_ports = ["80", "2379", "2380"] # HTTP, ETCD, ETCD
-  allowed_internal_communication_ports_block = ["10.172.0.0/20"] # Internal region block
-  allowed_ports_tcp_anyip                    = ["22", "443", "8883"] # Incoming ports from IGW
+  allowed_internal_communication_ports       = ["80", "2379", "2380"] # HTTP, ETCD, ETCD
+  allowed_internal_communication_ports_block = ["10.172.0.0/20"]      # Internal region block
+  allowed_ports_tcp_anyip                    = ["22", "443", "8883"]  # Incoming ports from IGW
 }
 
 module "paddy_internal_dns" {
@@ -40,11 +40,11 @@ module "paddy_internal_dns" {
 
 module "paddy_certs" {
   source = "./gcp-cloud-certs"
-  name = "paddy"
+  name   = "paddy"
 
   ssl_certificate_domain = "mqtt.danielstefani.online"
-  private_key         = var.private_key
-  private_certificate = var.private_certificate
+  private_key            = var.private_key
+  private_certificate    = var.private_certificate
 }
 
 resource "google_compute_global_address" "static-global-ip" {
@@ -57,11 +57,11 @@ resource "google_compute_global_address" "static-global-ip" {
 module "paddy_auth_single_instance" {
   source = "./gcp-cloud-vm"
 
-  name         = "auth"
-  internal_ip  = "10.172.0.2"
-  zone         = var.zone
+  name          = "auth"
+  internal_ip   = "10.172.0.2"
+  zone          = var.zone
   instance_type = "e2-micro"
-  network_name = module.paddy_nw.network_name
+  network_name  = module.paddy_nw.network_name
 
   startup_script = file("${path.module}/vm-startup-scripts/auth-startup-script.sh")
 
@@ -71,11 +71,11 @@ module "paddy_auth_single_instance" {
 module "postgres_master_single_instance" {
   source = "./gcp-cloud-vm"
 
-  name         = "postgres-master"
-  internal_ip  = "10.172.0.3"
-  zone         = var.zone
+  name          = "postgres-master"
+  internal_ip   = "10.172.0.3"
+  zone          = var.zone
   instance_type = "e2-small"
-  network_name = module.paddy_nw.network_name
+  network_name  = module.paddy_nw.network_name
 
   startup_script = file("${path.module}/vm-startup-scripts/db-master-startup-script.sh")
 }
@@ -83,11 +83,11 @@ module "postgres_master_single_instance" {
 module "etcd_single_instance" {
   source = "./gcp-cloud-vm"
 
-  name         = "etcd"
-  internal_ip  = "10.172.0.4"
-  zone         = var.zone
+  name          = "etcd"
+  internal_ip   = "10.172.0.4"
+  zone          = var.zone
   instance_type = "e2-micro"
-  network_name = module.paddy_nw.network_name
+  network_name  = module.paddy_nw.network_name
 
   startup_script = file("${path.module}/vm-startup-scripts/etcd-startup-script.sh")
 }
@@ -98,8 +98,8 @@ module "etcd_single_instance" {
 module "paddy_broker_instance_template" {
   source = "./gcp-cloud-vm-template"
 
-  name         = "paddy-broker"
-  network_name = module.paddy_nw.network_name
+  name          = "paddy-broker"
+  network_name  = module.paddy_nw.network_name
   instance_type = "e2-small"
 
   startup_script = file("${path.module}/vm-startup-scripts/broker-startup-script.sh")
@@ -108,8 +108,8 @@ module "paddy_broker_instance_template" {
 module "paddy_backend_instance_template" {
   source = "./gcp-cloud-vm-template"
 
-  name         = "paddy-backend"
-  network_name = module.paddy_nw.network_name
+  name          = "paddy-backend"
+  network_name  = module.paddy_nw.network_name
   instance_type = "e2-micro"
 
   backend_mqtt_host          = var.backend_mqtt_host
@@ -126,14 +126,14 @@ module "paddy_backend_instance_template" {
 module "broker_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
-  name              = "broker-cluster"
-  zone              = var.zone
-  region            = var.region
+  name               = "broker-cluster"
+  zone               = var.zone
+  region             = var.region
   static_external_ip = google_compute_global_address.static-global-ip.self_link
-  instance_template = module.paddy_broker_instance_template.self_link
+  instance_template  = module.paddy_broker_instance_template.self_link
 
-  tcp_target_ports       = { "mqtts" = 8883 }
-  health_check_port      = 8883
+  tcp_target_ports  = { "mqtts" = 8883 }
+  health_check_port = 8883
 
   ssl_certificates = [module.paddy_certs.self_ssl_cert]
 
@@ -143,14 +143,14 @@ module "broker_global_lb_cluster" {
 module "backend_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
-  name              = "backend-cluster"
-  zone              = var.zone
-  region            = var.region
+  name               = "backend-cluster"
+  zone               = var.zone
+  region             = var.region
   static_external_ip = google_compute_global_address.static-global-ip.self_link
-  instance_template = module.paddy_backend_instance_template.self_link
+  instance_template  = module.paddy_backend_instance_template.self_link
 
-  tcp_target_ports       = { "https" = 443 }
-  health_check_port      = 443
+  tcp_target_ports  = { "https" = 443 }
+  health_check_port = 443
 
   ssl_certificates = [module.paddy_certs.managed_ssl_cert]
 

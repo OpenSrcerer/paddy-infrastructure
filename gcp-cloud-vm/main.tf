@@ -40,7 +40,7 @@ resource "google_compute_instance" "default" {
   }
 
   metadata = {
-    internal_ip = var.internal_ip
+    internal_ip                     = var.internal_ip
     backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
   }
 }
