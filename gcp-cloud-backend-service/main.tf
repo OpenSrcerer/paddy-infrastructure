@@ -45,7 +45,7 @@ resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   name    = "${var.name}-intlb-fwd-rule"
 
   ip_protocol           = "TCP"
-  ports                 = toset(var.target_ports)
+  ports                 = toset(formatlist("%s", var.target_ports))
   ip_address            = var.internal_static_ip
   load_balancing_scheme = "INTERNAL"
 
