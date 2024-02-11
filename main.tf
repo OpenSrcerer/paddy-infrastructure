@@ -19,10 +19,15 @@ terraform {
 module "paddy_nw" {
   source = "./gcp-cloud-network"
 
-  name                                       = "paddy-network"
-  allowed_internal_communication_ports       = ["80", "2379", "4370", "5369"] # HTTP, ETCD, EMQX Clustering...
-  allowed_internal_communication_ports_block = ["10.172.0.0/20"]              # Internal region block
-  allowed_ports_tcp_anyip                    = ["22", "443", "8883"]          # Incoming ports from IGW
+  name = "paddy-network"
+  allowed_internal_communication_ports = [
+    "80",                    # HTTP
+    "2379",                  # ETCD
+    "8083-8084",             # EMQX WS
+    "4370-4380", "5369-5379" # EMQX Clustering
+  ]
+  allowed_internal_communication_ports_block = ["10.172.0.0/20"]     # Internal region block
+  allowed_ports_tcp_anyip                    = ["22", "443", "8883"] # Incoming ports from IGW
 }
 
 module "paddy_internal_dns" {
