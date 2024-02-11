@@ -1,5 +1,5 @@
 data "template_file" "init" {
-  template = file("${path.module}/../vm-startup-scripts/auth-startup-script.sh")
+  template = var.startup_script
 }
 
 resource "google_compute_address" "internal_ip" {
