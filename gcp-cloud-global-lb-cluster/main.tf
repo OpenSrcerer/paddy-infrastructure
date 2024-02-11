@@ -45,6 +45,7 @@ resource "google_compute_region_instance_group_manager" "default" {
     minimal_action                 = "RESTART"
     most_disruptive_allowed_action = "REPLACE"
     max_surge_fixed                = var.replicas
+    max_unavailable_fixed          = ceil(var.replicas / 2)
 #     replacement_method      = "SUBSTITUTE"
 #     max_unavailable_percent = 50
 #     max_surge_percent       = 100
