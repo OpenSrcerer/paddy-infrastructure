@@ -80,7 +80,7 @@ module "postgres_master_single_instance" {
 # ------------------------------
 
 
-# ----- Clusters -----
+# ----- Cluster Templates -----
 module "paddy_broker_instance_template" {
   source = "./gcp-cloud-vm-template"
 
@@ -105,7 +105,10 @@ module "paddy_backend_instance_template" {
 
   startup_script = file("${path.module}/vm-startup-scripts/backend-startup-script.sh")
 }
+# ------------------------------
 
+
+# ----- Clusters -----
 module "broker_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
