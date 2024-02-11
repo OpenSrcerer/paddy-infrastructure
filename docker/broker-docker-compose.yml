@@ -10,7 +10,7 @@ services:
     container_name: emqx
     restart: on-failure
     environment:
-      - "EMQX_NODE__NAME=paddy-emqx@${BROKER_INTERNAL_IP}"
+      - EMQX_NODE__NAME=paddy-emqx@${BROKER_INTERNAL_IP}
     healthcheck:
       test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
       interval: 5s
