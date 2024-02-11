@@ -41,7 +41,7 @@ resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   port_range  = each.value
   ip_address  = var.internal_static_ip
 
-  target = google_compute_target_tcp_proxy.internal_proxy[each.key].self_link
+  target = google_compute_region_target_tcp_proxy.internal_proxy[each.key].self_link
 }
 # ------------------------------
 
