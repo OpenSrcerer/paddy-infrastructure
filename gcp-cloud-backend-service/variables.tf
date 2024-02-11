@@ -1,7 +1,5 @@
 variable "name" {}
 
-variable "region" {}
-
 variable "global_static_ip" {}
 
 variable "internal_static_ip" {}
