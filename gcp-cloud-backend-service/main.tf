@@ -39,7 +39,7 @@ resource "google_compute_backend_service" "global_backend_service" {
 # ------------------------------
 
 # ---- INTERNAL LOAD BALANCER ----
-resource "google_compute_target_tcp_proxy" "internal_proxy" {
+resource "google_compute_region_target_tcp_proxy" "internal_proxy" {
   for_each = var.target_ports
 
   region = var.region
