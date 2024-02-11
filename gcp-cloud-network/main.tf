@@ -19,7 +19,7 @@ resource "google_compute_firewall" "default" {
 
   allow {
     protocol = "tcp"
-    ports    = var.allowed_internal_communication_ports
+#     ports    = var.allowed_internal_communication_ports
   }
   source_ranges = var.allowed_internal_communication_ports_block
 }
