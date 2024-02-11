@@ -8,7 +8,7 @@ module "backend_service" {
   global_static_ip   = var.static_external_ip
   internal_static_ip = var.static_internal_ip
 
-  instance_group                   = google_compute_instance_group_manager.default.instance_group
+  instance_group                   = google_compute_region_instance_group_manager.default.instance_group
   max_connections_per_instance     = var.max_connections_per_instance
   health_check                     = google_compute_health_check.tcp_health_check.self_link
   proxy_connection_timeout_seconds = var.proxy_connection_timeout_seconds
