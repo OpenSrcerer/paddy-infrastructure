@@ -9,7 +9,7 @@ resource "google_compute_target_ssl_proxy" "global_proxy" {
   ssl_policy = var.security_policy
 }
 
-resource "google_compute_global_forwarding_rule" "tcp_forwarding_rule" {
+resource "google_compute_global_forwarding_rule" "tcp_global_forwarding_rule" {
   for_each = var.target_ports
 
   name = "${var.name}-global-lb-forwarding-rule-${each.key}"
@@ -30,11 +30,11 @@ resource "google_compute_target_tcp_proxy" "internal_proxy" {
   backend_service = google_compute_backend_service.backend_service[each.key].self_link
 }
 
-resource "google_compute_forwarding_rule" "name" {
+resource "google_compute_forwarding_rule" "tcp_internal_forwarding_rule" {
   for_each = var.target_ports
 
   region = var.region
-  name   = "${var.name}-internal-lb-forwarding-rule-${each.key}"
+  name   = "${var.name}-intlb-fwd-rule-${each.key}"
 
   ip_protocol = "TCP"
   port_range  = each.value
