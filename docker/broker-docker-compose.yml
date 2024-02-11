@@ -11,6 +11,8 @@ services:
     restart: on-failure
     environment:
       - EMQX_NODE_NAME=paddy-emqx@${BROKER_INTERNAL_IP}
+      - EMQX_NODE_COOKIE=bonkersdbobcat
+      - EMQX_HOST=127.0.0.1
     healthcheck:
       test: [ "CMD", "/opt/emqx/bin/emqx", "ctl", "status" ]
       interval: 5s
@@ -18,12 +20,11 @@ services:
       retries: 5
     volumes:
       - "./emqx/emqx.conf:/opt/emqx/etc/emqx.conf:ro"
-    network_mode: host
-#    ports:
-#      - "8883:1883"           # Redirect mqtts traffic to mqtt because we are using a terminating LB
-#      - "8083:8083"          # ws
-#      - "8084:8084"          # wss
-#      - "8883:8883"          # mqtts
+    ports:
+      - "4000-65535:4000-65535" # forgive me, but network type host doesn't work for some reason
+#      - "8083:8083"           # ws
+#      - "8084:8084"           # wss
+#      - "8883:8883"           # This is actually a TCP listener (check emqx.conf) but used like this because of terminating LB
 #      - "18083:18083"         # web dashboard
 #      - "4370:4370"           # Erlang port mapper (epmd) (clustering)
 #      - "5369:5369"           # Cluster RPC port
