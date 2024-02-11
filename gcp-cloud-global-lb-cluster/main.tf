@@ -39,7 +39,7 @@ resource "google_compute_instance_group_manager" "default" {
     type                    = "PROACTIVE"
     minimal_action          = "RESTART"
     replacement_method      = "RECREATE"
-    max_unavailable_percent = 100
+    max_unavailable_percent = 50
   }
 
   version {

@@ -91,18 +91,6 @@ module "etcd_single_instance" {
 
   startup_script = file("${path.module}/vm-startup-scripts/etcd-startup-script.sh")
 }
-
-module "etcd_single_instance" {
-  source = "./gcp-cloud-vm"
-
-  name          = "brokertest"
-  internal_ip   = "10.172.0.69"
-  zone          = var.zone
-  instance_type = "e2-small"
-  network_name  = module.paddy_nw.network_name
-
-  startup_script = file("${path.module}/vm-startup-scripts/broker-startup-script.sh")
-}
 # ------------------------------
 
 
