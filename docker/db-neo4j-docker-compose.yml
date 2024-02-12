@@ -12,10 +12,6 @@ services:
     volumes:
       - home/chronos/neo4j/data:/data
       - home/chronos/neo4j/logs:/logs
-    environment:
-      - NEO4J_dbms_memory_pagecache_size=1G
-      - NEO4j_dbms_memory_heap_initial__size=1G
-      - NEO4j_dbms_memory_heap_max__size=1G
     ports:
       - "7474:7474"
       - "7687:7687"
