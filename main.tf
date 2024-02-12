@@ -82,7 +82,7 @@ module "db_neo4j_single_instance" {
   name          = "postgres-master"
   internal_ip   = "10.172.0.3"
   zone          = var.zone
-  instance_type = "f1-micro"
+  instance_type = "e2-micro"
   network_name  = module.paddy_nw.network_name
 
   startup_script = file("${path.module}/vm-startup-scripts/db-neo4j-startup-script.sh")
