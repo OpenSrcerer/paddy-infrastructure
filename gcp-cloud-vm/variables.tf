@@ -8,6 +8,16 @@ variable "zone" {}
 
 variable "instance_type" {}
 
+variable "disk_size" {
+  type    = number
+  default = null
+}
+
+variable "image" {
+  type    = string
+  default = "cos-cloud/cos-stable"
+}
+
 variable "startup_script" {
   type = string
 }
