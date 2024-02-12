@@ -10,8 +10,8 @@ services:
     container_name: neo4j
     restart: on-failure
     volumes:
-      - home/chronos/neo4j/data:/data
-      - home/chronos/neo4j/logs:/logs
+      - /home/chronos/neo4j/data:/data
+      - /home/chronos/neo4j/logs:/logs
     ports:
       - "7474:7474"
       - "7687:7687"
