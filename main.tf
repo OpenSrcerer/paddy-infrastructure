@@ -83,7 +83,6 @@ module "db_neo4j_single_instance" {
   internal_ip   = "10.172.0.3"
   zone          = var.zone
   instance_type = "e2-micro"
-  image         = "ubuntu-os-pro-cloud/ubuntu-pro-2204-lts"
   disk_size     = 100 # Gigabytes
   network_name  = module.paddy_nw.network_name
 
