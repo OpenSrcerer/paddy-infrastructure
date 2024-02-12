@@ -42,5 +42,8 @@ resource "google_compute_instance" "default" {
 
   metadata = {
     backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
+    backend_db_uri                  = var.backend_db_uri
+    backend_db_user                 = var.backend_db_user
+    backend_db_password             = var.backend_db_password
   }
 }

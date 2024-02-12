@@ -26,3 +26,17 @@ variable "startup_script" {
 variable "backend_mqtt_authentication_key" {
   default = "<unset>"
 }
+
+// ---- NEO4J CREDENTIALS ----
+
+variable "backend_db_uri" {
+  default = "<unset>"
+}
+
+variable "backend_db_user" {
+  default = "<unset>"
+}
+
+variable "backend_db_password" {
+  default = "<unset>"
+}

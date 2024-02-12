@@ -11,6 +11,9 @@ env:
   TF_VAR_backend_auth_service_url: ${{ vars.BACKEND_AUTH_SERVICE_URL }}
   TF_VAR_private_key: ${{ secrets.PRIVATE_KEY }}
   TF_VAR_private_certificate: ${{ secrets.PRIVATE_CERTIFICATE }}
+  TF_VAR_backend_db_uri: ${{ vars.BACKEND_DB_URI }}
+  TF_VAR_backend_db_user: ${{ vars.BACKEND_DB_USER }}
+  TF_VAR_backend_db_password: ${{ vars.BACKEND_DB_PASSWORD }}
   GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
 permissions:

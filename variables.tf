@@ -39,3 +39,17 @@ variable "backend_mqtt_authentication_key" {
   description = "The key used to create the JWKS for MQTT authentication"
   type        = string
 }
+
+// ---- NEO4J CREDENTIALS ----
+
+variable "backend_db_uri" {
+  type = string
+}
+
+variable "backend_db_user" {
+  type = string
+}
+
+variable "backend_db_password" {
+  type = string
+}
