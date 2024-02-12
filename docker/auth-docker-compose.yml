@@ -21,12 +21,6 @@ services:
           - paddy.auth.io
     image: ghcr.io/opensrcerer/paddy-auth:master
     restart: on-failure
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost/auth/v1/health"]
-#      interval: 5s
-#      timeout: 30s
-#      retries: 3
-#      start_period: 10s
     ports:
       - "80:80"
     environment:
