@@ -1,0 +1,21 @@
+version: "3.8"
+
+networks:
+  paddy-bridge:
+    driver: bridge
+
+services:
+  neo4j:
+    image: neo4j:5.16.0
+    container_name: neo4j
+    restart: on-failure
+    volumes:
+      - $HOME/neo4j/data:/data
+      - $HOME/neo4j/logs:/logs
+    environment:
+      - NEO4J_dbms_memory_pagecache_size=1G
+      - NEO4j_dbms_memory_heap_initial__size=1G
+      - NEO4j_dbms_memory_heap_max__size=1G
+    ports:
+      - "7474:7474"
+      - "7687:7687"

@@ -21,10 +21,11 @@ module "paddy_nw" {
 
   name = "paddy-network"
   allowed_internal_communication_ports = [
-    "80",                    # HTTP
-    "2379",                  # ETCD
-    "8083-8084",             # EMQX WS
-    "4370-4380", "5369-5379" # EMQX Clustering
+    "80",                     # HTTP
+    "2379",                   # ETCD
+    "8083-8084",              # EMQX WS
+    "4370-4380", "5369-5379", # EMQX Clustering
+    "7687"                    # Bolt (neo4j)
   ]
   allowed_internal_communication_ports_block = ["10.172.0.0/20"]     # Internal region block
   allowed_ports_tcp_anyip                    = ["22", "443", "8883"] # Incoming ports from IGW
@@ -38,7 +39,7 @@ module "paddy_internal_dns" {
   network     = module.paddy_nw.self_link
   dns_records = {
     "10.172.0.2" = "auth"
-    "10.172.0.3" = "postgres-master"
+    "10.172.0.3" = "neo4j"
     "10.172.0.4" = "etcd"
     "10.172.0.5" = "broker-cluster"
     "10.172.0.6" = "backend-cluster"
@@ -75,17 +76,17 @@ module "paddy_auth_single_instance" {
   backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
 }
 
-# module "postgres_master_single_instance" {
-#   source = "./gcp-cloud-vm"
-#
-#   name          = "postgres-master"
-#   internal_ip   = "10.172.0.3"
-#   zone          = var.zone
-#   instance_type = "e2-small"
-#   network_name  = module.paddy_nw.network_name
-#
-#   startup_script = file("${path.module}/vm-startup-scripts/db-master-startup-script.sh")
-# }
+module "db_neo4j_single_instance" {
+  source = "./gcp-cloud-vm"
+
+  name          = "postgres-master"
+  internal_ip   = "10.172.0.3"
+  zone          = var.zone
+  instance_type = "f1-micro"
+  network_name  = module.paddy_nw.network_name
+
+  startup_script = file("${path.module}/vm-startup-scripts/db-neo4j-startup-script.sh")
+}
 
 module "etcd_single_instance" {
   source = "./gcp-cloud-vm"
