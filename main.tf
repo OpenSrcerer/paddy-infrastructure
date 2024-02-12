@@ -79,7 +79,7 @@ module "paddy_auth_single_instance" {
 module "db_neo4j_single_instance" {
   source = "./gcp-cloud-vm"
 
-  name          = "postgres-master"
+  name          = "neo4j"
   internal_ip   = "10.172.0.3"
   zone          = var.zone
   instance_type = "e2-micro"
