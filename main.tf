@@ -173,6 +173,6 @@ module "backend_global_lb_cluster" {
 
   ssl_certificates = [module.paddy_certs.managed_ssl_cert]
 
-  replicas = 1
+  replicas = 2
 }
 # --------------------
