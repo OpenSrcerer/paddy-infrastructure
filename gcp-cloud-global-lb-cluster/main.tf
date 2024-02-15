@@ -46,7 +46,7 @@ resource "google_compute_region_instance_group_manager" "default" {
 
   update_policy {
     type                           = "PROACTIVE"
-    minimal_action                 = "RESTART"
+    minimal_action                 = "REPLACE"
     most_disruptive_allowed_action = "REPLACE"
     max_surge_fixed                = (ceil(var.replicas / 2) < 3) ? 3 : ceil(var.replicas / 2) # Minimum is number of zones
     max_unavailable_fixed          = (ceil(var.replicas / 2) < 3) ? 3 : ceil(var.replicas / 2) # Minimum is number of zones
