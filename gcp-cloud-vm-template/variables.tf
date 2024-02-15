@@ -24,3 +24,16 @@ variable "backend_mqtt_subscriptions" {
 variable "backend_auth_service_url" {
   default = "<unset>"
 }
+
+// ---- NEO4J CREDENTIALS ----
+variable "backend_db_uri" {
+  default = "<unset>"
+}
+
+variable "backend_db_user" {
+  default = "<unset>"
+}
+
+variable "backend_db_password" {
+  default = "<unset>"
+}

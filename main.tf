@@ -74,10 +74,6 @@ module "paddy_auth_single_instance" {
   startup_script = file("${path.module}/vm-startup-scripts/auth-startup-script.sh")
 
   backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
-
-  backend_db_uri      = var.backend_db_uri
-  backend_db_user     = var.backend_db_user
-  backend_db_password = var.backend_db_password
 }
 
 module "db_neo4j_single_instance" {
@@ -129,6 +125,10 @@ module "paddy_backend_instance_template" {
   backend_mqtt_port          = var.backend_mqtt_port
   backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
   backend_auth_service_url   = var.backend_auth_service_url
+
+  backend_db_uri      = var.backend_db_uri
+  backend_db_user     = var.backend_db_user
+  backend_db_password = var.backend_db_password
 
   startup_script = file("${path.module}/vm-startup-scripts/backend-startup-script.sh")
 }
