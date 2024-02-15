@@ -153,7 +153,7 @@ module "broker_global_lb_cluster" {
 
   ssl_certificates = [module.paddy_certs.self_ssl_cert]
 
-  replicas = 3
+  replicas = 1
 }
 
 module "backend_global_lb_cluster" {
@@ -173,6 +173,6 @@ module "backend_global_lb_cluster" {
 
   ssl_certificates = [module.paddy_certs.managed_ssl_cert]
 
-  replicas = 2
+  replicas = 1
 }
 # --------------------
