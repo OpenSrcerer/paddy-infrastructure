@@ -67,7 +67,7 @@ module "paddy_auth_single_instance" {
 
   name          = "auth"
   internal_ip   = "10.172.0.2"
-  zone          = var.zone
+  zone          = "europe-west6-b"
   instance_type = "f1-micro"
   network_name  = module.paddy_nw.network_name
 
