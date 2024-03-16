@@ -23,6 +23,11 @@ variable "backend_mqtt_port" {
   type        = string
 }
 
+variable "backend_mqtt_device_read_topic" {
+  description = "Where the backend should write to for machine messages to receive"
+  type        = string
+}
+
 variable "backend_mqtt_subscriptions" {
   description = "Where the backend should listen to for machine messages"
   type        = string

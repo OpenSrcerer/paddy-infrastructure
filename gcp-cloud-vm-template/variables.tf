@@ -17,6 +17,10 @@ variable "backend_mqtt_port" {
   default = "<unset>"
 }
 
+variable "backend_mqtt_device_read_topic" {
+  default = "<unset>"
+}
+
 variable "backend_mqtt_subscriptions" {
   default = "<unset>"
 }

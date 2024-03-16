@@ -124,6 +124,7 @@ module "paddy_backend_instance_template" {
   backend_mqtt_host          = var.backend_mqtt_host
   backend_mqtt_port          = var.backend_mqtt_port
   backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
+  backend_mqtt_device_read_topic = var.backend_mqtt_device_read_topic
   backend_auth_service_url   = var.backend_auth_service_url
 
   backend_db_uri      = var.backend_db_uri
