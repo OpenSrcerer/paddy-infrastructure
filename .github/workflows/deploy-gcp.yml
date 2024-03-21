@@ -8,7 +8,7 @@ env:
   TF_VAR_backend_mqtt_port: ${{ vars.BACKEND_MQTT_PORT }}
   TF_VAR_backend_mqtt_device_read_topic: ${{ vars.BACKEND_MQTT_DEVICE_READ_TOPIC }}
   TF_VAR_backend_mqtt_subscriptions: ${{ vars.BACKEND_MQTT_SUBSCRIPTIONS }}
-  TF_VAR_backend_mqtt_scheduler_events: ${{ secrets.BACKEND_MQTT_SCHEDULER_EVENTS }}
+  TF_VAR_backend_mqtt_scheduler_events: ${{ vars.BACKEND_MQTT_SCHEDULER_EVENTS }}
   TF_VAR_backend_mqtt_authentication_key: ${{ secrets.BACKEND_MQTT_AUTHENTICATION_KEY }}
   TF_VAR_backend_auth_service_url: ${{ vars.BACKEND_AUTH_SERVICE_URL }}
   TF_VAR_private_key: ${{ secrets.PRIVATE_KEY }}
