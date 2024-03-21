@@ -43,6 +43,7 @@ module "paddy_internal_dns" {
     "10.172.0.4" = "etcd"
     "10.172.0.5" = "broker-cluster"
     "10.172.0.6" = "backend-cluster"
+    "10.172.0.7" = "scheduler"
   }
 }
 
@@ -100,6 +101,28 @@ module "etcd_single_instance" {
 
   startup_script = file("${path.module}/vm-startup-scripts/etcd-startup-script.sh")
 }
+
+module "paddy_scheduler_single_instance" {
+  source = "./gcp-cloud-vm"
+
+  name          = "scheduler"
+  internal_ip   = "10.172.0.7"
+  zone          = "europe-west6-c"
+  instance_type = "f1-micro"
+  network_name  = module.paddy_nw.network_name
+
+  startup_script = file("${path.module}/vm-startup-scripts/scheduler-startup-script.sh")
+
+  backend_mqtt_host              = var.backend_mqtt_host
+  backend_mqtt_port              = var.backend_mqtt_port
+  backend_mqtt_device_read_topic = var.backend_mqtt_device_read_topic
+
+  backend_db_uri      = var.backend_db_uri
+  backend_db_user     = var.backend_db_user
+  backend_db_password = var.backend_db_password
+
+  backend_auth_service_url = var.backend_auth_service_url
+}
 # ------------------------------
 
 
@@ -121,11 +144,11 @@ module "paddy_backend_instance_template" {
   network_name  = module.paddy_nw.network_name
   instance_type = "f1-micro"
 
-  backend_mqtt_host          = var.backend_mqtt_host
-  backend_mqtt_port          = var.backend_mqtt_port
-  backend_mqtt_subscriptions = var.backend_mqtt_subscriptions
+  backend_mqtt_host              = var.backend_mqtt_host
+  backend_mqtt_port              = var.backend_mqtt_port
+  backend_mqtt_subscriptions     = var.backend_mqtt_subscriptions
   backend_mqtt_device_read_topic = var.backend_mqtt_device_read_topic
-  backend_auth_service_url   = var.backend_auth_service_url
+  backend_auth_service_url       = var.backend_auth_service_url
 
   backend_db_uri      = var.backend_db_uri
   backend_db_user     = var.backend_db_user
