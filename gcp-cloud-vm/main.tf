@@ -41,6 +41,10 @@ resource "google_compute_instance" "default" {
   }
 
   metadata = {
+    backend_mqtt_host              = var.backend_mqtt_host
+    backend_mqtt_port              = var.backend_mqtt_port
+    backend_mqtt_device_read_topic = var.backend_mqtt_device_read_topic
+    backend_auth_service_url       = var.backend_auth_service_url
     backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
     backend_db_uri                  = var.backend_db_uri
     backend_db_user                 = var.backend_db_user

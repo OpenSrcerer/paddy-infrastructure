@@ -23,7 +23,23 @@ variable "startup_script" {
 }
 
 // ---- BACKEND-ENV-VARS ----
+variable "backend_mqtt_host" {
+  default = "<unset>"
+}
+
+variable "backend_mqtt_port" {
+  default = "<unset>"
+}
+
+variable "backend_mqtt_device_read_topic" {
+  default = "<unset>"
+}
+
 variable "backend_mqtt_authentication_key" {
+  default = "<unset>"
+}
+
+variable "backend_auth_service_url" {
   default = "<unset>"
 }
 
