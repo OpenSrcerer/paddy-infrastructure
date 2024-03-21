@@ -39,6 +39,10 @@ variable "backend_mqtt_authentication_key" {
   default = "<unset>"
 }
 
+variable "backend_mqtt_scheduler_events" {
+  default = "<unset>"
+}
+
 variable "backend_auth_service_url" {
   default = "<unset>"
 }

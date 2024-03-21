@@ -33,6 +33,11 @@ variable "backend_mqtt_subscriptions" {
   type        = string
 }
 
+variable "backend_mqtt_scheduler_events" {
+  description = "Where the scheduler VMs should subscribe to to receive events"
+  type        = string
+}
+
 variable "backend_auth_service_url" {
   description = "Authentication service URL"
   type        = string

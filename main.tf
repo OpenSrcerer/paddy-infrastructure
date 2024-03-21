@@ -116,6 +116,7 @@ module "paddy_scheduler_single_instance" {
   backend_mqtt_host              = var.backend_mqtt_host
   backend_mqtt_port              = var.backend_mqtt_port
   backend_mqtt_device_read_topic = var.backend_mqtt_device_read_topic
+  backend_mqtt_scheduler_events  = var.backend_mqtt_scheduler_events
 
   backend_db_uri      = var.backend_db_uri
   backend_db_user     = var.backend_db_user
@@ -148,6 +149,7 @@ module "paddy_backend_instance_template" {
   backend_mqtt_port              = var.backend_mqtt_port
   backend_mqtt_subscriptions     = var.backend_mqtt_subscriptions
   backend_mqtt_device_read_topic = var.backend_mqtt_device_read_topic
+  backend_mqtt_scheduler_events  = var.backend_mqtt_scheduler_events
   backend_auth_service_url       = var.backend_auth_service_url
 
   backend_db_uri      = var.backend_db_uri
