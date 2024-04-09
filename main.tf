@@ -83,7 +83,7 @@ module "db_neo4j_single_instance" {
   name          = "neo4j"
   internal_ip   = "10.172.0.3"
   zone          = var.zone
-  instance_type = "e2-micro"
+  instance_type = "e2-medium"
   disk_size     = 100 # Gigabytes
   network_name  = module.paddy_nw.network_name
 
