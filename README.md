@@ -18,3 +18,8 @@ The job of this code is to deploy the proper infrastructure for the whole Paddy 
 4. An EMQX Broker Cluster (Load Balanced)
 
 All application deployments are done on their own VM instance, by using Docker & Docker Compose scripts. Secrets/Variables defined in this repository are carried over to each instance through Google's instance metadata service.
+
+# Architecture Diagram
+<p align="center">
+    <img src="img/infra-overview.svg" alt="Overview of the Infrastructure"/>
+</p>
