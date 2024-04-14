@@ -5,15 +5,15 @@
     <style class="style-fonts">
       @font-face {
         font-family: "Virgil";
-        src: url("https://excalidraw.com/Virgil.woff2");
+        src: url("fira-code-variable.ttf");
       }
       @font-face {
         font-family: "Cascadia";
-        src: url("https://excalidraw.com/Cascadia.woff2");
+        src: url("fira-code-variable.ttf");
       }
       @font-face {
         font-family: "Assistant";
-        src: url("https://excalidraw.com/Assistant-Regular.woff2");
+        src: url("fira-code-variable.ttf");
       }
     </style>
     
