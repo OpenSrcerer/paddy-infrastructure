@@ -74,6 +74,9 @@ module "paddy_auth_single_instance" {
 
   startup_script = file("${path.module}/vm-startup-scripts/auth-startup-script.sh")
 
+  backend_mqtt_host               = var.backend_mqtt_host
+  backend_mqtt_port               = var.backend_mqtt_port
+  backend_mqtt_device_read_topic  = var.backend_mqtt_device_read_topic
   backend_mqtt_authentication_key = var.backend_mqtt_authentication_key
 }
 
