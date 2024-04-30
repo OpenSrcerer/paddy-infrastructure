@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "paddy-tf-state-bucket"
+    bucket = "paddy-infrastructure-tf-state"
     prefix = "terraform/state"
   }
 }
