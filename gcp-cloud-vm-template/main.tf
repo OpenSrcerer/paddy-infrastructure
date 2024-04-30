@@ -21,10 +21,11 @@ resource "google_compute_instance_template" "default_template" {
 
   network_interface {
     network = var.network_name
-    
-    # access_config {
-    #   // Ephemeral IP
-    # }
+
+    access_config {
+      nat_ip = ""
+      network_tier = "STANDARD"
+    }
   }
 
   service_account {

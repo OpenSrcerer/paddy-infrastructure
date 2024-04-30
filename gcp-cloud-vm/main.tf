@@ -25,9 +25,10 @@ resource "google_compute_instance" "default" {
     network    = var.network_name
     network_ip = google_compute_address.internal_ip.address
 
-    # access_config {
-    #   // auto assigned external ip
-    # }
+    access_config {
+      nat_ip = ""
+      network_tier = "STANDARD"
+    }
   }
 
   metadata_startup_script = data.template_file.init.rendered
