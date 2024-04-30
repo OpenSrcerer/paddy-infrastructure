@@ -41,9 +41,13 @@ module "paddy_internal_dns" {
     "10.172.0.2" = "auth"
     "10.172.0.3" = "neo4j"
     "10.172.0.4" = "etcd"
-    "10.172.0.5" = "broker-cluster"
-    "10.172.0.6" = "backend-cluster"
-    "10.172.0.7" = "scheduler"
+    "10.172.0.5" = "scheduler"
+    # VMs created by clusters
+    # "10.172.0.5"
+    # "10.172.0.6"
+    # ...
+    "10.172.1.2" = "broker-cluster"
+    "10.172.2.2" = "backend-cluster"
   }
 }
 
@@ -109,7 +113,7 @@ module "paddy_scheduler_single_instance" {
   source = "./gcp-cloud-vm"
 
   name          = "scheduler"
-  internal_ip   = "10.172.0.7"
+  internal_ip   = "10.172.0.5"
   zone          = "europe-west6-c"
   instance_type = "f1-micro"
   network_name  = module.paddy_nw.network_name
@@ -168,13 +172,20 @@ module "paddy_backend_instance_template" {
 module "broker_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
+  depends_on = [
+    paddy_auth_single_instance,
+    db_neo4j_single_instance,
+    etcd_single_instance,
+    paddy_scheduler_single_instance
+  ]
+
   name    = "broker-cluster"
   zone    = var.zone
   region  = var.region
   network = module.paddy_nw.self_link
 
   static_external_ip = google_compute_global_address.static-global-ip.self_link
-  static_internal_ip = "10.172.0.5"
+  static_internal_ip = "10.172.0.8"
   tcp_target_ports   = { "mqtts" = 8883 }
   health_check_port  = 8883
 
@@ -188,13 +199,20 @@ module "broker_global_lb_cluster" {
 module "backend_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
+  depends_on = [
+    paddy_auth_single_instance,
+    db_neo4j_single_instance,
+    etcd_single_instance,
+    paddy_scheduler_single_instance
+  ]
+
   name    = "backend-cluster"
   zone    = var.zone
   region  = var.region
   network = module.paddy_nw.self_link
 
   static_external_ip = google_compute_global_address.static-global-ip.self_link
-  static_internal_ip = "10.172.0.6"
+  static_internal_ip = "10.172.0.9"
   tcp_target_ports   = { "https" = 443 }
   health_check_port  = 443
 
