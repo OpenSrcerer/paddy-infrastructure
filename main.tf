@@ -172,13 +172,6 @@ module "paddy_backend_instance_template" {
 module "broker_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
 
-  depends_on = [
-    paddy_auth_single_instance,
-    db_neo4j_single_instance,
-    etcd_single_instance,
-    paddy_scheduler_single_instance
-  ]
-
   name    = "broker-cluster"
   zone    = var.zone
   region  = var.region
@@ -198,13 +191,6 @@ module "broker_global_lb_cluster" {
 
 module "backend_global_lb_cluster" {
   source = "./gcp-cloud-global-lb-cluster"
-
-  depends_on = [
-    paddy_auth_single_instance,
-    db_neo4j_single_instance,
-    etcd_single_instance,
-    paddy_scheduler_single_instance
-  ]
 
   name    = "backend-cluster"
   zone    = var.zone
