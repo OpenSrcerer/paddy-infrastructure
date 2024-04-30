@@ -178,7 +178,7 @@ module "broker_global_lb_cluster" {
   network = module.paddy_nw.self_link
 
   static_external_ip = google_compute_global_address.static-global-ip.self_link
-  static_internal_ip = "10.172.0.8"
+  static_internal_ip = "10.172.1.2"
   tcp_target_ports   = { "mqtts" = 8883 }
   health_check_port  = 8883
 
@@ -198,7 +198,7 @@ module "backend_global_lb_cluster" {
   network = module.paddy_nw.self_link
 
   static_external_ip = google_compute_global_address.static-global-ip.self_link
-  static_internal_ip = "10.172.0.9"
+  static_internal_ip = "10.172.2.2"
   tcp_target_ports   = { "https" = 443 }
   health_check_port  = 443
 
